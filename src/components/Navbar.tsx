@@ -33,6 +33,7 @@ export default function Navbar() {
     { name: t('nav.about'), href: '/#about' },
     { name: t('nav.services'), href: '/#services' },
     { name: t('nav.products'), href: '/products' },
+    { name: t('nav.insights'), href: '/insights' },
     { name: t('nav.contact'), href: '/#contact' },
     { name: t('nav.profile'), href: '/profile' }
   ];

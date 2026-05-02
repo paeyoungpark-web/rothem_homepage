@@ -10,6 +10,7 @@ const resources = {
         "contact": "문의안내",
         "profile": "CEO 프로필",
         "products": "보안 솔루션",
+        "insights": "보안 인사이츠",
         "login": "로그인",
         "logout": "로그아웃"
       },
@@ -93,6 +94,7 @@ const resources = {
         "contact": "Contact",
         "profile": "CEO Profile",
         "products": "Security Solutions",
+        "insights": "Security Insights",
         "login": "Login",
         "logout": "Logout"
       },

@@ -11,7 +11,9 @@ import ProfilePage from './pages/ProfilePage';
 import ProductsPage from './pages/ProductsPage';
 import ProductDetail from './pages/ProductDetail';
 import SettingsPage from './pages/SettingsPage';
+import InsightsPage from './pages/InsightsPage';
 import { SettingsProvider } from './context/SettingsContext';
+import Chatbot from './components/Chatbot';
 
 export default function App() {
   return (
@@ -25,7 +27,9 @@ export default function App() {
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/insights" element={<InsightsPage />} />
         </Routes>
+        <Chatbot />
       </BrowserRouter>
     </SettingsProvider>
   );
