@@ -1,4 +1,6 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { db } from '../firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export interface ActivityPost {
   id: string;
@@ -8,15 +10,25 @@ export interface ActivityPost {
   description: string;
 }
 
+export interface CompanyInfo {
+  ceo: string;
+  businessNumber: string;
+  phone: string;
+  email: string;
+  address: string;
+}
+
 interface SiteSettings {
   logoImage: string | null;
   profileImage: string | null;
   activities: ActivityPost[];
+  company: CompanyInfo;
 }
 
 interface SettingsContextType {
   settings: SiteSettings;
   updateSettings: (newSettings: Partial<SiteSettings>) => void;
+  updateCompany: (info: CompanyInfo) => Promise<void>;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
@@ -47,8 +59,27 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       logoImage: localStorage.getItem('site_logo') || null,
       profileImage: localStorage.getItem('site_profile') || null,
       activities,
+      company: {
+        ceo: '박배영',
+        businessNumber: '502-86-05484',
+        phone: '053-964-3033',
+        email: 'rothem@rothemsystem.com / paeyoungpark@gmail.com',
+        address: '대구시 동구 율하동로 23길 48'
+      }
     };
   });
+
+  useEffect(() => {
+    async function loadCompany() {
+      try {
+        const snap = await getDoc(doc(db, 'site_settings', 'company'));
+        if (snap.exists()) {
+          setSettings(prev => ({ ...prev, company: snap.data() as CompanyInfo }));
+        }
+      } catch (err) {}
+    }
+    loadCompany();
+  }, []);
 
   const updateSettings = (newSettings: Partial<SiteSettings>) => {
     setSettings(prev => {
@@ -68,8 +99,18 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const updateCompany = async (info: CompanyInfo) => {
+    try {
+      await setDoc(doc(db, 'site_settings', 'company'), info);
+      setSettings(prev => ({ ...prev, company: info }));
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+
   return (
-    <SettingsContext.Provider value={{ settings, updateSettings }}>
+    <SettingsContext.Provider value={{ settings, updateSettings, updateCompany }}>
       {children}
     </SettingsContext.Provider>
   );

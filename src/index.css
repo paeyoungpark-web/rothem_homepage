@@ -1,8 +1,24 @@
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --color-brand-50: #F8FFFE;
+  --color-brand-100: #F0FBF7;
+  --color-brand-400: #1D9E75;
+  --color-brand-500: #0F6E56;
+  --color-brand-800: #0a1628;
+  --font-sans: "Inter", "Noto Sans KR", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --animate-marquee: marquee 45s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 45s linear infinite;
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes marquee-reverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0%); }
+  }
 }
 
 html {

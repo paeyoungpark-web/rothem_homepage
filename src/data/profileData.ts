@@ -5,7 +5,7 @@ export const profileData: Record<string, any> = {
     title: "주식회사 로뎀시스템 대표이사",
     subtitle: "AI 보안전문가 및 정보보호/인공지능 경영시스템 선임심사원",
     linkedInUrl: "https://www.linkedin.com/in/pae-young-park-75899214a/?skipRedirect=true",
-    summary: "AI 시대를 맞이하여 기업의 안전한 디지털 전환과 보안 컴플라이언스 체계 수립을 이끄는 글로벌 수준의 보안 전문가입니다. ISO/IEC 42001(인공지능 경영시스템) 및 ISO/IEC 27001(정보보호 경영시스템) 인증 심사 및 컨설팅을 주도하며 글로벌 경쟁력을 갖춘 IT 생태계 조성에 기여하고 있습니다.",
+    summary: "AI 시대를 맞이하여 기업의 안전한 디지털 전환과 보안 컴플라이언스 체계 수립을 이끄는 글로벌 수준의 보안 전문가입니다. ISO/IEC 42001(인공지능 경영시스템) 및 ISO/IEC 27001(정보보호 경영시스템) 인증 심사 및 컨설팅을 주도하며 글로벌 경쟁력을 갖춘 IT 생태계 조성에 기여하고 있습니다. 2010년부터 1인법인을 운영해오며, 지식기반 산업으로의 전환 전략으로 점진적으로 비중을 높이고 있습니다.",
     
     sections: {
       certifications: {
@@ -23,7 +23,7 @@ export const profileData: Record<string, any> = {
       career: {
         title: "주요 경력",
         items: [
-          "(현) 주식회사 로뎀시스템 대표",
+          "(현) 주식회사 로뎀시스템 대표 (2010년부터 1인법인 운영, 지식기반 산업으로 전환 중)",
           "(현) 대중소협력재단 기술보호위원",
           "(현) 중소벤처기업부 기술정보진흥원 평가위원",
           "(현) 스마트공장 DX코칭, 멘토 / 수준진단 위원",
@@ -73,7 +73,7 @@ export const profileData: Record<string, any> = {
     title: "CEO, Rodem System Co., Ltd.",
     subtitle: "AI Security Expert & Lead Auditor for InfoSec/AI Management Systems",
     linkedInUrl: "https://www.linkedin.com/in/pae-young-park-75899214a/?skipRedirect=true",
-    summary: "As a global-class security expert, I lead organizations in secure digital transformation and compliance in the AI era. Specializing in ISO/IEC 42001 (AIMS) and ISO/IEC 27001 (ISMS) consulting and auditing, I am dedicated to building a trustworthy IT ecosystem with global competitiveness.",
+    summary: "As a global-class security expert, I lead organizations in secure digital transformation and compliance in the AI era. Specializing in ISO/IEC 42001 (AIMS) and ISO/IEC 27001 (ISMS) consulting and auditing, I am dedicated to building a trustworthy IT ecosystem with global competitiveness. Operating a one-person corporation since 2010, I have been gradually increasing the focus on knowledge-based industries as part of a strategic transition.",
     
     sections: {
       certifications: {
@@ -91,7 +91,7 @@ export const profileData: Record<string, any> = {
       career: {
         title: "Professional Career",
         items: [
-          "(Present) CEO, Rodem System Co., Ltd.",
+          "(Present) CEO, Rodem System Co., Ltd. (Since 2010)",
           "(Present) Technology Protection Committee Member, Large & Small Business Cooperation Foundation",
           "(Present) Evaluation Committee Member, TIPA (Ministry of SMEs and Startups)",
           "(Present) DX Coach & Mentor/Evaluator for Smart Factories",

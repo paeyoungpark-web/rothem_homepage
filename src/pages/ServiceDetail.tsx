@@ -4,7 +4,6 @@ import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import Chatbot from '../components/Chatbot';
 import { serviceDetailsData } from '../data/serviceDetails';
 import { useEffect } from 'react';
 
@@ -105,7 +104,6 @@ export default function ServiceDetail() {
         </div>
       </main>
       <Footer />
-      <Chatbot />
     </div>
   );
 }

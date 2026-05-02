@@ -23,6 +23,22 @@
         }
       },
       "required": ["email", "displayName", "createdAt", "updatedAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Information about extra products",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the product"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the product"
+        }
+      },
+      "required": ["name", "description"]
     }
   },
   "firestore": {
@@ -31,6 +47,12 @@
         "$ref": "#/entities/User"
       },
       "description": "Stores user profile information"
+    },
+    "/products/{productId}": {
+      "schema": {
+        "$ref": "#/entities/Product"
+      },
+      "description": "Stores extra products information"
     }
   }
 }

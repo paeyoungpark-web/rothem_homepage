@@ -1,10 +1,15 @@
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
-import AboutSection from '../components/AboutSection';
 import ServicesSection from '../components/ServicesSection';
-import ContactSection from '../components/ContactSection';
+import PerformanceCounter from '../components/PerformanceCounter';
+import SolutionShowcase from '../components/SolutionShowcase';
+import DailyThreatSection from '../components/DailyThreatSection';
+import CEOMessage from '../components/CEOMessage';
+import { ClientLogoSlider } from '../components/ExtraSections';
+import SelfDiagnosisCTA from '../components/SelfDiagnosisCTA';
+import ContactCTA from '../components/ContactCTA';
 import Footer from '../components/Footer';
-import Chatbot from '../components/Chatbot';
+import SEO from '../components/SEO';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -25,16 +30,21 @@ export default function HomePage() {
   }, [location]);
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
+    <div className="min-h-screen bg-white font-sans text-slate-900 transition-colors">
+      <SEO />
       <Navbar />
       <main>
         <HeroSection />
-        <AboutSection />
         <ServicesSection />
-        <ContactSection />
+        <PerformanceCounter />
+        <SolutionShowcase />
+        <DailyThreatSection />
+        <CEOMessage />
+        <ClientLogoSlider />
+        <SelfDiagnosisCTA />
+        <ContactCTA />
       </main>
       <Footer />
-      <Chatbot />
     </div>
   );
 }

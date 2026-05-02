@@ -29,8 +29,9 @@ export default function SettingsPage() {
     if (type === 'activity') {
       const newActivities: ActivityPost[] = [];
       let processed = 0;
+      const fileList = Array.from(files) as File[];
       
-      Array.from(files).forEach((file) => {
+      fileList.forEach((file) => {
         if (!file.type.startsWith('image/')) {
           processed++;
           return;
@@ -176,9 +177,21 @@ export default function SettingsPage() {
                   {currentLang === 'ko' ? '사이트 로고' : 'Site Logo'}
                 </h3>
                 <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-                  <div className="w-48 h-24 bg-slate-100 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden p-2">
+                  <div className="w-48 h-24 bg-slate-100 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden p-2 relative group">
                     {settings.logoImage ? (
-                      <img src={settings.logoImage} alt="Current Logo" className="max-w-full max-h-full object-contain" />
+                      <>
+                        <img src={settings.logoImage} alt="Current Logo" className="max-w-full max-h-full object-contain" />
+                        <button
+                          onClick={() => {
+                            updateSettings({ logoImage: null });
+                            setMessage(currentLang === 'ko' ? '로고가 삭제되었습니다.' : 'Logo removed.');
+                          }}
+                          className="absolute top-1 right-1 w-6 h-6 bg-black/60 hover:bg-red-600 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 text-xs"
+                          title="Delete Logo"
+                        >
+                          ×
+                        </button>
+                      </>
                     ) : (
                       <span className="text-slate-400 text-sm font-medium">No Logo</span>
                     )}
@@ -206,15 +219,81 @@ export default function SettingsPage() {
                 </div>
               </div>
 
+              {/* Company Details Upload/Edit */}
+              <div className="pt-8 border-t border-slate-100">
+                <h3 className="text-xl font-bold text-slate-900 mb-6">
+                  {currentLang === 'ko' ? '푸터 및 회사 정보' : 'Footer & Company Info'}
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-slate-600">CEO {currentLang === 'ko' ? '(대표이사)' : ''}</label>
+                    <input 
+                      type="text" 
+                      value={settings.company?.ceo || ''}
+                      onChange={(e) => updateSettings({ company: { ...settings.company, ceo: e.target.value } })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-slate-600">{currentLang === 'ko' ? '이메일' : 'Email'}</label>
+                    <input 
+                      type="email" 
+                      value={settings.company?.email || ''}
+                      onChange={(e) => updateSettings({ company: { ...settings.company, email: e.target.value } })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-slate-600">{currentLang === 'ko' ? '전화번호' : 'Phone'}</label>
+                    <input 
+                      type="text" 
+                      value={settings.company?.phone || ''}
+                      onChange={(e) => updateSettings({ company: { ...settings.company, phone: e.target.value } })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-slate-600">{currentLang === 'ko' ? '사업자등록번호' : 'Business Number'}</label>
+                    <input 
+                      type="text" 
+                      value={settings.company?.businessNumber || ''}
+                      onChange={(e) => updateSettings({ company: { ...settings.company, businessNumber: e.target.value } })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium mb-1 text-slate-600">{currentLang === 'ko' ? '회사 주소' : 'Address'}</label>
+                    <input 
+                      type="text" 
+                      value={settings.company?.address || ''}
+                      onChange={(e) => updateSettings({ company: { ...settings.company, address: e.target.value } })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+
               {/* Profile Upload */}
-              <div>
+              <div className="pt-8 border-t border-slate-100">
                 <h3 className="text-xl font-bold text-slate-900 mb-4">
                   {currentLang === 'ko' ? '대표이사 프로필 사진' : 'CEO Profile Photo'}
                 </h3>
                 <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-                  <div className="w-32 h-32 bg-slate-100 rounded-full border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden pb-0 bg-blue-50">
+                  <div className="w-32 h-32 bg-slate-100 rounded-full border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden pb-0 bg-blue-50 relative group">
                     {settings.profileImage ? (
-                      <img src={settings.profileImage} alt="Current Profile" className="w-full h-full object-cover" />
+                      <>
+                        <img src={settings.profileImage} alt="Current Profile" className="w-full h-full object-cover" />
+                        <button
+                          onClick={() => {
+                            updateSettings({ profileImage: null });
+                            setMessage(currentLang === 'ko' ? '프로필 사진이 삭제되었습니다.' : 'Profile image removed.');
+                          }}
+                          className="absolute top-2 right-1/4 translate-x-1/2 w-6 h-6 bg-black/60 hover:bg-red-600 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 text-xs"
+                          title="Delete Profile Image"
+                        >
+                          ×
+                        </button>
+                      </>
                     ) : (
                       <span className="text-slate-400 text-sm font-medium text-center">No Photo</span>
                     )}

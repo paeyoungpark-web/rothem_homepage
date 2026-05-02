@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import Chatbot from '../components/Chatbot';
 import { productData } from '../data/productData';
 import { ShieldCheck, ChevronRight, Sparkles } from 'lucide-react';
 import { useEffect } from 'react';
@@ -97,7 +96,6 @@ export default function ProductsPage() {
         </div>
       </main>
       <Footer />
-      <Chatbot />
     </div>
   );
 }

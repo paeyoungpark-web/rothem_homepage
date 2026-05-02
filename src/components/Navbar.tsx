@@ -1,18 +1,30 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Globe, LogIn, LogOut, User, Settings } from 'lucide-react';
+import { Menu, X, Globe, LogIn, LogOut, User, Settings, Sun, Moon, ChevronDown, MessageCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { auth, logout } from '../firebase';
 import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { useSettings } from '../context/SettingsContext';
+import { useTheme } from '../context/ThemeContext';
+import { KAKAO_CHANNEL_URL } from '../lib/constants';
+
+type DropdownItem = { name: string; href: string };
+type NavItem = {
+  name: string;
+  href?: string;
+  children?: DropdownItem[];
+};
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const { settings } = useSettings();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,18 +41,44 @@ export default function Navbar() {
     return () => unsubscribe();
   }, []);
 
-  const navLinks = [
-    { name: t('nav.about'), href: '/#about' },
-    { name: t('nav.services'), href: '/#services' },
-    { name: t('nav.products'), href: '/products' },
-    { name: t('nav.insights'), href: '/insights' },
-    { name: t('nav.contact'), href: '/#contact' },
-    { name: t('nav.profile'), href: '/profile' }
+  const navLinks: NavItem[] = [
+    {
+      name: '보안 솔루션',
+      children: [
+        { name: '취급제품', href: '/#solutions' },
+        { name: '도입사례', href: '/#case-studies' },
+        { name: '견적요청', href: '/#contact' }
+      ]
+    },
+    {
+      name: '컨설팅',
+      children: [
+        { name: 'ISO 27001', href: '/#services' },
+        { name: 'ISO 27701', href: '/#services' },
+        { name: '개인정보보호', href: '/#services' },
+        { name: '보안감사', href: '/#services' }
+      ]
+    },
+    {
+      name: '자문 서비스',
+      children: [
+        { name: 'CISO 자문', href: '/#advisory' },
+        { name: '경영진 자문', href: '/#advisory' },
+        { name: '법률 자문', href: '/#advisory' }
+      ]
+    },
+    { name: '보안 인사이츠', href: '/insights' },
+    {
+      name: '회사소개',
+      children: [
+        { name: 'CEO 프로필', href: '/profile' },
+        { name: '팀 소개', href: '/#team' },
+        { name: '수상·인증', href: '/#certifications' },
+        { name: '고객사', href: '/#clients' }
+      ]
+    },
+    { name: '문의하기', href: '/#contact' }
   ];
-
-  const toggleLanguage = () => {
-    i18n.changeLanguage(i18n.language === 'ko' ? 'en' : 'ko');
-  };
 
   const handleLogout = async () => {
     try {
@@ -52,122 +90,185 @@ export default function Navbar() {
     }
   };
 
+  const TopNavLayout = isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-brand-500 py-4' : 'bg-transparent py-6';
+  const TextColor = isScrolled ? 'text-slate-900 hover:text-brand-500' : 'text-white hover:text-brand-100';
+
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${TopNavLayout}`}>
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
+          
+          {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="flex items-center gap-1 group pb-1">
+            <Link to="/" className="flex items-center gap-2 group pb-1">
               {settings.logoImage ? (
-                <img src={settings.logoImage} alt="rothemsystem logo" className="h-10 object-contain" />
+                <img src={settings.logoImage} alt="로뎀시스템 로고" className="h-10 object-contain" />
               ) : (
                 <>
                   <div className="flex items-end tracking-tighter italic">
-                    <span className="text-[#E60012] text-3xl font-black">R</span>
-                    <span className="text-[#004EA2] text-3xl font-black -ml-1">O</span>
+                    <span className="text-brand-500 text-3xl font-black">R</span>
+                    <span className="text-brand-400 text-3xl font-black -ml-1">O</span>
                   </div>
-                  <span className={`text-xl tracking-tight font-bold transition-colors ${isScrolled ? 'text-slate-900 group-hover:text-blue-600' : 'text-white'}`}>
+                  <span className={`text-xl tracking-tight font-bold transition-colors ${TextColor}`}>
                     rothemsystem
                   </span>
                 </>
               )}
-            </a>
+            </Link>
           </div>
-          <div className="hidden md:flex space-x-8 items-center">
+
+          {/* Desktop Links */}
+          <div className="hidden md:flex space-x-6 lg:space-x-8 items-center flex-1 justify-center">
             {navLinks.map((link) => (
-              <a key={link.name} href={link.href} className={`text-sm font-medium transition-colors hover:text-blue-600 ${isScrolled ? 'text-slate-700' : 'text-slate-200'}`}>
-                {link.name}
-              </a>
-            ))}
-            
-            <div className="flex items-center space-x-4 ml-4">
-              <button 
-                onClick={toggleLanguage}
-                className={`flex items-center gap-1 text-sm font-medium hover:text-blue-600 transition-colors ${isScrolled ? 'text-slate-700' : 'text-slate-200'}`}
+              <div 
+                key={link.name}
+                className="relative group"
+                onMouseEnter={() => link.children && setActiveDropdown(link.name)}
+                onMouseLeave={() => setActiveDropdown(null)}
               >
-                <Globe size={18} />
-                {i18n.language === 'ko' ? 'EN' : 'KR'}
-              </button>
-              
-              {user ? (
-                <div className="flex items-center gap-4">
-                  <div className={`flex items-center gap-2 text-sm font-medium ${isScrolled ? 'text-slate-700' : 'text-slate-200'}`}>
-                    {user.photoURL ? (
-                      <img src={user.photoURL} alt={user.displayName || "User"} className="w-6 h-6 rounded-full" />
-                    ) : (
-                      <User size={18} />
-                    )}
-                    {user.displayName?.split(' ')[0]}
-                  </div>
-                  <button 
-                    onClick={() => navigate('/settings')}
-                    className={`flex items-center gap-1 text-sm font-medium hover:text-indigo-500 transition-colors ${isScrolled ? 'text-slate-700' : 'text-slate-200'}`}
-                    title={t('nav.settings') || 'Settings'}
-                  >
-                    <Settings size={18} />
+                {link.href ? (
+                  <a href={link.href} className={`flex items-center gap-1 text-sm font-semibold transition-colors ${TextColor}`}>
+                    {link.name}
+                  </a>
+                ) : (
+                  <button className={`flex items-center gap-1 text-sm font-semibold transition-colors ${TextColor} focus:outline-none`}>
+                    {link.name}
+                    {link.children && <ChevronDown size={14} className="opacity-70 group-hover:rotate-180 transition-transform duration-200" />}
                   </button>
-                  <button 
-                    onClick={handleLogout}
-                    className={`flex items-center gap-1 text-sm font-medium hover:text-red-500 transition-colors ${isScrolled ? 'text-slate-700' : 'text-slate-200'}`}
-                  >
-                    <LogOut size={18} />
-                    {t('nav.logout')}
+                )}
+
+                {/* Dropdown menu */}
+                {link.children && activeDropdown === link.name && (
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-48 bg-white border border-slate-100 rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.08)] py-2 animate-in fade-in slide-in-from-top-2">
+                    {link.children.map(child => (
+                      <a 
+                        key={child.name} 
+                        href={child.href}
+                        className="block px-4 py-2.5 text-sm text-slate-700 hover:bg-brand-50 hover:text-brand-500 font-medium transition-colors"
+                      >
+                        {child.name}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+            
+          {/* Right actions */}
+          <div className="hidden md:flex items-center space-x-4">
+            <button 
+              onClick={() => i18n.changeLanguage(i18n.language === 'ko' ? 'en' : 'ko')}
+              className={`flex items-center gap-1 text-xs font-semibold px-2 py-1.5 rounded-lg transition-colors border ${isScrolled ? 'border-slate-200 text-slate-700 hover:bg-slate-50' : 'border-white/30 text-white hover:bg-white/10'}`}
+            >
+              <Globe size={14} />
+              {i18n.language === 'ko' ? 'EN' : 'KR'}
+            </button>
+
+            <a 
+              href={KAKAO_CHANNEL_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg bg-[#FEE500] text-[#000000] hover:bg-[#FEE500]/90 transition-colors shadow-sm"
+            >
+              <MessageCircle size={14} fill="#000" />
+              카카오톡 상담
+            </a>
+            
+            {user ? (
+              <div className="relative group">
+                <button className={`flex items-center gap-2 text-sm font-medium ${TextColor}`}>
+                  {user.photoURL ? (
+                    <img src={user.photoURL} alt={user.displayName || "User"} className="w-7 h-7 rounded-full border border-white/20 shadow-sm" />
+                  ) : (
+                    <User size={20} />
+                  )}
+                </button>
+                <div className="absolute right-0 top-full mt-4 w-40 bg-white border border-slate-100 rounded-xl shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                  {user.email && ['paeyoung.park@gmail.com', 'rothem@rothemsystem.com', 'leeyw@rothemsystem.com'].includes(user.email) && (
+                    <button onClick={() => navigate('/admin')} className="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-brand-50 hover:text-brand-500 font-medium">
+                      설정(Admin)
+                    </button>
+                  )}
+                  <button onClick={toggleTheme} className="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-brand-50 hover:text-brand-500 font-medium flex items-center justify-between">
+                    다크모드 {theme === 'dark' ? <Sun size={14}/> : <Moon size={14}/>}
+                  </button>
+                  <button onClick={handleLogout} className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 font-medium">
+                    로그아웃
                   </button>
                 </div>
-              ) : (
-                <button 
-                  onClick={() => navigate('/login')}
-                  className={`flex items-center gap-1 text-sm font-medium hover:text-blue-600 transition-colors ${isScrolled ? 'text-slate-700' : 'text-slate-200'}`}
-                >
-                  <LogIn size={18} />
-                  {t('nav.login')}
-                </button>
-              )}
-            </div>
+              </div>
+            ) : (
+              <button 
+                onClick={() => navigate('/login')}
+                className={`flex items-center gap-1.5 text-sm font-semibold transition-colors ${TextColor}`}
+              >
+                <LogIn size={16} />
+                로그인
+              </button>
+            )}
           </div>
-          <div className="md:hidden">
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center gap-4">
+             <a 
+              href={KAKAO_CHANNEL_URL}
+              target="_blank" 
+              rel="noreferrer"
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-[#FEE500] text-black"
+            >
+              <MessageCircle size={16} fill="#000" />
+            </a>
             <button onClick={() => setIsOpen(!isOpen)} className={isScrolled ? 'text-slate-900' : 'text-white'}>
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white shadow-lg absolute w-full left-0 top-full">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <div className="md:hidden bg-white/95 backdrop-blur-md shadow-xl absolute w-full left-0 top-full border-t border-slate-100 max-h-[85vh] overflow-y-auto">
+          <div className="px-4 py-6 space-y-6">
             {navLinks.map((link) => (
-              <a key={link.name} href={link.href} onClick={() => setIsOpen(false)} className="block px-3 py-2 text-base font-medium text-slate-800 hover:text-blue-600 hover:bg-slate-50">
-                {link.name}
-              </a>
+              <div key={link.name}>
+                {link.href ? (
+                  <a href={link.href} onClick={() => setIsOpen(false)} className="block text-lg font-bold text-slate-900">
+                    {link.name}
+                  </a>
+                ) : (
+                  <div className="space-y-3">
+                    <span className="block text-lg font-bold text-slate-900 border-b border-slate-100 pb-2">{link.name}</span>
+                    <div className="pl-4 grid grid-cols-2 gap-y-3 gap-x-4">
+                      {link.children?.map(child => (
+                        <a key={child.name} href={child.href} onClick={() => setIsOpen(false)} className="block text-sm font-medium text-slate-600 hover:text-brand-500">
+                          {child.name}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
-            <button 
-              onClick={() => { toggleLanguage(); setIsOpen(false); }}
-              className="w-full flex items-center gap-2 px-3 py-2 text-base font-medium text-slate-800 hover:text-blue-600 hover:bg-slate-50"
-            >
-              <Globe size={20} />
-              {i18n.language === 'ko' ? 'Switch to English' : '한국어로 변경'}
-            </button>
-            
-            {user ? (
-              <button 
-                onClick={handleLogout}
-                className="w-full flex items-center gap-2 px-3 py-2 text-base font-medium text-red-600 hover:text-red-700 hover:bg-red-50"
-              >
-                <LogOut size={20} />
-                {t('nav.logout')}
-              </button>
-            ) : (
-              <button 
-                onClick={() => { navigate('/login'); setIsOpen(false); }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-base font-medium text-slate-800 hover:text-blue-600 hover:bg-slate-50"
-              >
-                <LogIn size={20} />
-                {t('nav.login')}
-              </button>
-            )}
+
+            <div className="pt-6 border-t border-slate-100 grid grid-cols-2 gap-4">
+              {user ? (
+                 <button onClick={handleLogout} className="flex items-center justify-center gap-2 py-2.5 bg-slate-100 text-slate-700 rounded-lg font-medium text-sm">
+                   <LogOut size={16} /> 로그아웃
+                 </button>
+              ) : (
+                <button onClick={() => navigate('/login')} className="flex items-center justify-center gap-2 py-2.5 bg-slate-100 text-slate-700 rounded-lg font-medium text-sm">
+                   <LogIn size={16} /> 로그인
+                </button>
+              )}
+               <button onClick={toggleTheme} className="flex items-center justify-center gap-2 py-2.5 bg-brand-50 text-brand-500 rounded-lg font-medium text-sm">
+                 {theme === 'dark' ? <><Sun size={16}/> 라이트 모드</> : <><Moon size={16}/> 다크 모드</>}
+               </button>
+            </div>
           </div>
         </div>
       )}
     </nav>
   );
 }
+

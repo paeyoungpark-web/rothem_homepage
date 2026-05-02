@@ -4,7 +4,6 @@ import { ArrowLeft, CheckCircle2, ShieldCheck, ShieldAlert } from 'lucide-react'
 import { motion } from 'motion/react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import Chatbot from '../components/Chatbot';
 import { productData } from '../data/productData';
 import { useEffect } from 'react';
 
@@ -111,7 +110,6 @@ export default function ProductDetail() {
         </div>
       </main>
       <Footer />
-      <Chatbot />
     </div>
   );
 }

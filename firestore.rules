@@ -8,6 +8,10 @@ service cloud.firestore {
     function isSignedIn() {
       return request.auth != null;
     }
+    
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.email in ['paeyoung.park@gmail.com', 'rothem@rothemsystem.com', 'leeyw@rothemsystem.com'];
+    }
 
     function isValidId(id) {
       return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
@@ -35,7 +39,7 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow read: if isOwner(userId);
+      allow read: if isOwner(userId) || isAdmin();
       allow create: if isOwner(userId) 
         && isValidId(userId)
         && isValidUser(incoming())
@@ -47,6 +51,144 @@ service cloud.firestore {
         && incoming().displayName is string && incoming().displayName.size() > 0 && incoming().displayName.size() <= 100
         && incoming().updatedAt == request.time;
       allow delete: if false; // Users shouldn't be deleted from client directly
+    }
+
+    function isValidGalleryImage(data) {
+      return data.keys().hasAll(['imageUrl', 'title', 'createdAt'])
+        && data.keys().size() >= 3
+        && data.keys().size() <= 4
+        && data.imageUrl is string && data.imageUrl.size() <= 1000
+        && data.title is string && data.title.size() <= 200
+        && data.createdAt is timestamp
+        && data.get('uploadedBy', '') is string;
+    }
+
+    match /gallery/{photoId} {
+      allow read: if true;
+      allow create: if isAdmin() 
+        && isValidId(photoId)
+        && isValidGalleryImage(incoming())
+        && incoming().createdAt == request.time;
+      allow update: if false; // Gallery images don't need updates, just delete and re-upload
+      allow delete: if isAdmin() && isValidId(photoId);
+    }
+
+    function isValidProfileData(data) {
+      return data.keys().hasAny(['name', 'photoUrl', 'bio', 'history', 'updatedAt'])
+        && data.get('name', '') is string
+        && data.get('photoUrl', '') is string
+        && data.get('bio', '') is string
+        && data.get('history', []) is list
+        && data.get('updatedAt', request.time) is timestamp; // Optional in read, but checked later
+    }
+
+    match /settings/ceo_profile {
+      allow read: if true;
+      allow write: if isAdmin()
+        && isValidProfileData(incoming())
+        && incoming().updatedAt == request.time;
+    }
+    function isValidInsightData(data) {
+      return data.keys().hasAll(['title', 'content', 'category', 'date', 'createdAt'])
+        && data.title is string && data.title.size() <= 200
+        && data.content is string && data.content.size() <= 2000
+        && data.category is string && data.category.size() <= 100
+        && data.date is string && data.date.size() <= 20
+        && data.createdAt is timestamp;
+    }
+
+    match /insights/{insightId} {
+      allow read: if true;
+      allow create: if isAdmin()
+        && isValidId(insightId)
+        && isValidInsightData(incoming())
+        && incoming().createdAt == request.time;
+      allow update: if isAdmin()
+        && isValidId(insightId)
+        && incoming().diff(existing()).affectedKeys().hasAny(['title', 'content', 'category', 'updatedAt']);
+      allow delete: if isAdmin() && isValidId(insightId);
+    }
+    function isValidInquiry(data) {
+      return data.keys().hasAll(['name', 'email', 'phone', 'message', 'privacyAgreed', 'createdAt'])
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 100
+        && data.email is string && data.email.size() >= 0 && data.email.size() <= 200
+        && data.phone is string && data.phone.size() >= 0 && data.phone.size() <= 50
+        && data.message is string && data.message.size() > 0 && data.message.size() <= 5000
+        && data.privacyAgreed == true
+        && data.createdAt is timestamp;
+    }
+
+    match /inquiries/{inquiryId} {
+      allow create: if isValidInquiry(incoming())
+        && incoming().createdAt == request.time;
+      allow read, update, delete: if isAdmin() && isValidId(inquiryId);
+    }
+
+    function isValidThreat(data) {
+      return data.keys().hasAll(['title', 'description', 'level', 'remediation', 'date', 'createdAt'])
+        && data.title is string && data.title.size() <= 200
+        && data.description is string && data.description.size() <= 5000
+        && data.level is string && data.level in ['low', 'medium', 'high', 'critical']
+        && data.remediation is string && data.remediation.size() <= 5000
+        && data.date is string && data.date.size() <= 20
+        && data.createdAt is timestamp;
+    }
+    
+    match /daily_threats/{threatId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidThreat(incoming()) && incoming().createdAt == request.time;
+      allow update, delete: if isAdmin() && isValidId(threatId);
+    }
+    
+    function isValidLead(data) {
+      return data.keys().hasAll(['name', 'email', 'checklistType', 'createdAt'])
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 100
+        && data.email is string && data.email.size() > 0 && data.email.size() <= 200
+        && data.checklistType is string && data.checklistType.size() <= 100
+        && data.createdAt is timestamp;
+    }
+    
+    match /leads/{leadId} {
+      allow create: if isValidLead(incoming()) && incoming().createdAt == request.time;
+      allow read, update, delete: if isAdmin() && isValidId(leadId);
+    }
+    
+    function isValidSubscriber(data) {
+      return data.keys().hasAll(['email', 'createdAt'])
+        && data.email is string && data.email.size() > 0 && data.email.size() <= 200
+        && data.createdAt is timestamp;
+    }
+    
+    match /subscribers/{subscriberId} {
+      allow read: if true;
+      allow create: if isValidSubscriber(incoming()) && incoming().createdAt == request.time;
+      allow update, delete: if isAdmin() && isValidId(subscriberId);
+    }
+    
+    match /site_settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /client_logos/{logoId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /team_members/{memberId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    function isValidProduct(data) {
+      return data.keys().hasAll(['name', 'description'])
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 200
+        && data.description is string && data.description.size() > 0 && data.description.size() <= 1000;
+    }
+    
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
   }
 }
