@@ -30,7 +30,9 @@ export default function Navbar() {
   const navLinks = [
     { name: t('nav.about'), href: '/#about' },
     { name: t('nav.services'), href: '/#services' },
+    { name: t('nav.products'), href: '/products' },
     { name: t('nav.contact'), href: '/#contact' },
+    { name: t('nav.profile'), href: '/profile' }
   ];
 
   const toggleLanguage = () => {
@@ -52,8 +54,14 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <div className="flex-shrink-0">
-            <a href="/" className={`text-2xl font-bold transition-colors ${isScrolled ? 'text-blue-600' : 'text-white'}`}>
-              rothemsystem
+            <a href="/" className="flex items-center gap-1 group pb-1">
+              <div className="flex items-end tracking-tighter italic">
+                <span className="text-[#E60012] text-3xl font-black">R</span>
+                <span className="text-[#004EA2] text-3xl font-black -ml-1">O</span>
+              </div>
+              <span className={`text-xl tracking-tight font-bold transition-colors ${isScrolled ? 'text-slate-900 group-hover:text-blue-600' : 'text-white'}`}>
+                rothemsystem
+              </span>
             </a>
           </div>
           <div className="hidden md:flex space-x-8 items-center">

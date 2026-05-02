@@ -8,6 +8,8 @@ const resources = {
         "about": "회사소개",
         "services": "사업영역",
         "contact": "문의안내",
+        "profile": "CEO 프로필",
+        "products": "보안 솔루션",
         "login": "로그인",
         "logout": "로그아웃"
       },
@@ -85,6 +87,8 @@ const resources = {
         "about": "About Us",
         "services": "Services",
         "contact": "Contact",
+        "profile": "CEO Profile",
+        "products": "Security Solutions",
         "login": "Login",
         "logout": "Logout"
       },

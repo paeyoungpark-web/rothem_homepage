@@ -7,13 +7,19 @@ export default function Footer() {
     <footer className="bg-slate-900 py-12 border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="text-white text-xl font-bold mb-4 md:mb-0">
-            {t('footer.company')}
+          <div className="mb-4 md:mb-0 flex flex-col">
+            <div className="flex items-end tracking-tighter italic mb-1">
+              <span className="text-[#E60012] text-3xl font-black">R</span>
+              <span className="text-[#004EA2] text-3xl font-black -ml-1">O</span>
+              <span className="text-white text-xl font-bold tracking-tight ml-1 not-italic">{t('footer.company')}</span>
+            </div>
+            <p className="text-slate-500 text-xs font-semibold">Information & Technology</p>
           </div>
           <div className="flex space-x-6 text-slate-400 text-sm">
             <a href="/#about" className="hover:text-white transition-colors">{t('nav.about')}</a>
             <a href="/#services" className="hover:text-white transition-colors">{t('nav.services')}</a>
-            <a href="/#" className="hover:text-white transition-colors">{t('footer.terms')}</a>
+            <a href="/products" className="hover:text-white transition-colors">{t('nav.products')}</a>
+            <a href="/profile" className="hover:text-white transition-colors">{t('nav.profile')}</a>
             <a href="/#" className="hover:text-white transition-colors">{t('footer.privacy')}</a>
           </div>
         </div>
