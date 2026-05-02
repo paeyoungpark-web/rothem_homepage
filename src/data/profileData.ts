@@ -1,7 +1,7 @@
 export const profileData: Record<string, any> = {
   ko: {
     seoTitle: "대표이사 박배영 프로필 | 로뎀시스템",
-    name: "박배영 (Baeyoung Park)",
+    name: "박배영 (Paeyoung Park)",
     title: "주식회사 로뎀시스템 대표이사",
     subtitle: "AI 보안전문가 및 정보보호/인공지능 경영시스템 선임심사원",
     linkedInUrl: "https://www.linkedin.com/in/pae-young-park-75899214a/?skipRedirect=true",
@@ -68,8 +68,8 @@ export const profileData: Record<string, any> = {
     }
   },
   en: {
-    seoTitle: "CEO Baeyoung Park Profile | rothemsystem",
-    name: "Baeyoung Park",
+    seoTitle: "CEO Paeyoung Park Profile | rothemsystem",
+    name: "Paeyoung Park",
     title: "CEO, Rodem System Co., Ltd.",
     subtitle: "AI Security Expert & Lead Auditor for InfoSec/AI Management Systems",
     linkedInUrl: "https://www.linkedin.com/in/pae-young-park-75899214a/?skipRedirect=true",

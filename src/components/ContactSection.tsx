@@ -1,4 +1,4 @@
-import { MapPin, Phone, Mail } from 'lucide-react';
+import { MapPin, Phone, Mail, Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function ContactSection() {
@@ -47,6 +47,18 @@ export default function ContactSection() {
                   <div>
                     <h3 className="text-lg font-medium text-slate-900">{t('contact.email_label')}</h3>
                     <p className="mt-1 text-slate-600">{t('contact.email_val')}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <div className="flex-shrink-0 w-12 h-12 bg-blue-50 border border-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                  <Globe size={24} />
+                </div>
+                <div className="ml-6 flex items-center min-h-[3rem]">
+                  <div>
+                    <h3 className="text-lg font-medium text-slate-900">{t('contact.website_label')}</h3>
+                    <a href={t('contact.website_url')} target="_blank" rel="noopener noreferrer" className="mt-1 text-blue-600 hover:text-blue-800 transition-colors inline-block">{t('contact.website_val')}</a>
                   </div>
                 </div>
               </div>

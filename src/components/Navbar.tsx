@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Globe, LogIn, LogOut, User } from 'lucide-react';
+import { Menu, X, Globe, LogIn, LogOut, User, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { auth, logout } from '../firebase';
 import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
+import { useSettings } from '../context/SettingsContext';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -11,6 +12,7 @@ export default function Navbar() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [user, setUser] = useState<FirebaseUser | null>(null);
+  const { settings } = useSettings();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,13 +57,19 @@ export default function Navbar() {
         <div className="flex justify-between items-center">
           <div className="flex-shrink-0">
             <a href="/" className="flex items-center gap-1 group pb-1">
-              <div className="flex items-end tracking-tighter italic">
-                <span className="text-[#E60012] text-3xl font-black">R</span>
-                <span className="text-[#004EA2] text-3xl font-black -ml-1">O</span>
-              </div>
-              <span className={`text-xl tracking-tight font-bold transition-colors ${isScrolled ? 'text-slate-900 group-hover:text-blue-600' : 'text-white'}`}>
-                rothemsystem
-              </span>
+              {settings.logoImage ? (
+                <img src={settings.logoImage} alt="rothemsystem logo" className="h-10 object-contain" />
+              ) : (
+                <>
+                  <div className="flex items-end tracking-tighter italic">
+                    <span className="text-[#E60012] text-3xl font-black">R</span>
+                    <span className="text-[#004EA2] text-3xl font-black -ml-1">O</span>
+                  </div>
+                  <span className={`text-xl tracking-tight font-bold transition-colors ${isScrolled ? 'text-slate-900 group-hover:text-blue-600' : 'text-white'}`}>
+                    rothemsystem
+                  </span>
+                </>
+              )}
             </a>
           </div>
           <div className="hidden md:flex space-x-8 items-center">
@@ -90,6 +98,13 @@ export default function Navbar() {
                     )}
                     {user.displayName?.split(' ')[0]}
                   </div>
+                  <button 
+                    onClick={() => navigate('/settings')}
+                    className={`flex items-center gap-1 text-sm font-medium hover:text-indigo-500 transition-colors ${isScrolled ? 'text-slate-700' : 'text-slate-200'}`}
+                    title={t('nav.settings') || 'Settings'}
+                  >
+                    <Settings size={18} />
+                  </button>
                   <button 
                     onClick={handleLogout}
                     className={`flex items-center gap-1 text-sm font-medium hover:text-red-500 transition-colors ${isScrolled ? 'text-slate-700' : 'text-slate-200'}`}

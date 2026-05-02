@@ -7,12 +7,14 @@ import Footer from '../components/Footer';
 import Chatbot from '../components/Chatbot';
 import { profileData } from '../data/profileData';
 import { useEffect } from 'react';
+import { useSettings } from '../context/SettingsContext';
 
 export default function ProfilePage() {
   const { i18n } = useTranslation();
   const navigate = useNavigate();
   const currentLang = i18n.language === 'ko' ? 'ko' : 'en';
   const data = profileData[currentLang];
+  const { settings } = useSettings();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -41,7 +43,7 @@ export default function ProfilePage() {
               >
                 <div className="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-blue-50 shadow-md mb-6 relative bg-blue-100 flex items-center justify-center">
                   <img 
-                    src="https://media.licdn.com/dms/image/v2/D5603AQHWKX_mYMTO4g/profile-displayphoto-crop_800_800/B56ZyjXY.eKkAI-/0/1772267348633?e=1779321600&v=beta&t=kRXt0Qt1IDL_iugfHNazIyfulwbK3pL7rd8xjORQgUQ" 
+                    src={settings.profileImage || "https://media.licdn.com/dms/image/v2/D5603AQHWKX_mYMTO4g/profile-displayphoto-crop_800_800/B56ZyjXY.eKkAI-/0/1772267348633?e=1779321600&v=beta&t=kRXt0Qt1IDL_iugfHNazIyfulwbK3pL7rd8xjORQgUQ"} 
                     alt={data.name}
                     className="w-full h-full object-cover"
                   />
@@ -181,6 +183,46 @@ export default function ProfilePage() {
                   </ul>
                 </motion.div>
               </div>
+
+              {/* CEO Activities */}
+              {settings.activities && settings.activities.length > 0 && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                  className="bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-sm"
+                >
+                  <h3 className="text-xl font-bold text-slate-900 mb-8 flex items-center">
+                    <span className="p-2 bg-blue-50 text-blue-600 rounded-lg mr-3">
+                      <Award size={24} />
+                    </span>
+                    {currentLang === 'ko' ? '대표이사 활동' : 'CEO Activities'}
+                  </h3>
+                  
+                  <div className="flex flex-col gap-8">
+                    {settings.activities.map((act) => (
+                      <div key={act.id} className="flex flex-col md:flex-row gap-6 p-4 md:p-0 group">
+                        <div className="w-full md:w-2/5 aspect-video rounded-2xl overflow-hidden shadow-sm shrink-0 border border-slate-100">
+                          <img 
+                            src={act.image} 
+                            alt={act.title || 'CEO Activity'} 
+                            className="w-full h-full object-cover transform md:group-hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
+                        <div className="flex-grow flex flex-col justify-center">
+                          {act.date && (
+                            <span className="text-sm font-semibold text-blue-600 mb-2">{act.date}</span>
+                          )}
+                          <h4 className="text-xl font-bold text-slate-900 mb-3">{act.title}</h4>
+                          <p className="text-slate-600 leading-relaxed whitespace-pre-wrap text-sm md:text-base">
+                            {act.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
 
             </div>
           </div>
