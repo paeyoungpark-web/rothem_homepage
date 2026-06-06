@@ -89,22 +89,23 @@ const packages = [
 
 // Document codes from the actual checklist screenshot - incredibly authentic!
 const KcsDocuments = [
-  { code: 'KCS-M-04(0)', name: '정보보호 경영시스템 매뉴얼', desc: '경영진 책임 및 전반적인 정보보호 관리체계 기본 헌장' },
-  { code: 'KCS-OZ-0700(1)', name: '관리적보안규정', desc: '조직 구성원의 관리 통제 표준 절차 및 의무 사항' },
-  { code: 'KCS-OZ-0701(1)', name: '내부정보보호감사지침', desc: '정기 보안 내부 점검을 위한 감사 계획 및 가이드라인' },
-  { code: 'KCS-OZ-0702(1)', name: '위험관리지침', desc: '보안 자산 위험 분석, 식별 및 정량적 평정·수용 절차' },
-  { code: 'KCS-OZ-0703(1)', name: '사업연속성관리지침', desc: '재난·재해 등 대내외 유선 돌발 상황 시 긴급 대응 체계 보장' },
-  { code: 'KCS-OZ-0704(1)', name: '정보보호실행계획지침', desc: '연도별 세부 경영 보호 시행 목표 수립 및 이행 점검' },
-  { code: 'KCS-OZ-0705(1)', name: '법률준수에관한 지침', desc: '정통망법, 개인정보보호법 등 최신 개정 법령 모니터링 가이드' },
-  { code: 'KCS-OZ-0706(1)', name: '아웃소싱보안지침', desc: '외주 개발 및 상주 협력 업체 선정·점검·파기 통제 조항' },
-  { code: 'KCS-OZ-0707(1)', name: '프로젝트관리지침', desc: '수행 사업 시 각 단계별 신규 위협 완화 및 기밀성 관리' },
-  { code: 'KCS-OZ-0800(1)', name: '인적보안규정', desc: '입퇴사자 보안 서약, 이행 서류, 직무 분리 가이드' },
-  { code: 'KCS-OZ-0801(1)', name: '개인정보보호지침', desc: '사용자 고유식별정보 처리 라이프사이클 및 최소 권한' },
-  { code: 'KCS-OZ-0900(1)', name: '물리적보안규정', desc: '통제 구역, 사무실, 이중 백업실 등 출입 관리 규정' },
-  { code: 'KCS-OZ-1000(1)', name: '기술적보안규정', desc: '서버, 시스템, 소스코드, 방화벽 통신 통제 표준' },
-  { code: 'KCS-OZ-1001(1)', name: '접근통제지침', desc: 'VPN, DB 접근 로그 모니터링 및 패스워드 정책 관리' },
-  { code: 'KCS-OZ-1002(1)', name: '보안사고처리지침', desc: '해킹 침해사고 의심 시 즉각적 전파, 격리, 복구 시나리오' },
-  { code: 'KCS-OZ-1003(1)', name: '시스템운영관리지침', desc: '정기 패치, 이중화, 변경 관리 및 로그 무결성 관리' },
+  { code: 'ISMS-M-04(0)', name: '정보보호 경영시스템 매뉴얼', desc: '경영진 책임 및 전반적인 정보보호 관리체계 기본 헌장' },
+  { code: 'ISMS-OZ-0700(1)', name: '관리적보안규정', desc: '조직 구성원의 관리 통제 표준 절차 및 의무 사항' },
+  { code: 'ISMS-OZ-0701(1)', name: '내부정보보호감사지침', desc: '정기 보안 내부 점검을 위한 감사 계획 및 가이드라인' },
+  { code: 'ISMS-OZ-0702(1)', name: '위험관리지침', desc: '보안 자산 위험 분석, 식별 및 정량적 평정·수용 절차' },
+  { code: 'ISMS-OZ-0703(1)', name: '사업연속성관리지침', desc: '재난·재해 등 대내외 유선 돌발 상황 시 긴급 대응 체계 보장' },
+  { code: 'AIMS-M-01(0)', name: '인공지능 경영시스템 매뉴얼 (ISO 42001)', desc: '인공지능 경영시스템의 제정 목적, 적용 자원 및 리스크 통제 기본 규격' },
+  { code: 'AIMS-OZ-0704(1)', name: 'AI 윤리 및 알고리즘 신뢰성 확보 지침', desc: 'AI 알고리즘 모델 학습용 데이터의 편탄성 검수, 설명가능성 및 투명성 보증 통제' },
+  { code: 'ISMS-OZ-0705(1)', name: '법률준수에관한 지침', desc: '정통망법, 개인정보보호법 및 인공지능 관련 최신 개정 법령 모니터링 가이드' },
+  { code: 'ISMS-OZ-0706(1)', name: '아웃소싱보안지침', desc: '외주 개발 및 상주 협력 업체 선정·점검·파기 통제 조항' },
+  { code: 'ISMS-OZ-0707(1)', name: '프로젝트관리지침', desc: '수행 사업 시 각 단계별 신규 위협 완화 및 기밀성 관리' },
+  { code: 'ISMS-OZ-0800(1)', name: '인적보안규정', desc: '입퇴사자 보안 서약, 이행 서류, 직무 분리 가이드' },
+  { code: 'PIMS-OZ-0801(1)', name: '개인정보 및 학습데이터 보호지침', desc: '고객 식별정보 처리 라이프사이클 및 AI 기계학습 원데이터 가명처리와 보호 방법 조율' },
+  { code: 'ISMS-OZ-0900(1)', name: '물리적보안규정', desc: '통제 구역, 사무실, 이중 백업실 등 출입 관리 규정' },
+  { code: 'ISMS-OZ-1000(1)', name: '기술적보안규정', desc: '서버, 시스템, 소스코드, 방화벽 통신 통제 표준' },
+  { code: 'ISMS-OZ-1001(1)', name: '접근통제지침', desc: 'VPN, DB 접근 로그 모니터링 및 패스워드 정책 관리' },
+  { code: 'ISMS-OZ-1002(1)', name: '보안사고처리지침', desc: '해킹 침해사고 의심 시 즉각적 전파, 격리, 복구 시나리오' },
+  { code: 'ISMS-OZ-1003(1)', name: '시스템운영관리지침', desc: '정기 패치, 이중화, 변경 관리 및 로그 무결성 관리' },
 ];
 
 const faqs = [
@@ -114,7 +115,7 @@ const faqs = [
   },
   {
     q: '컨설팅 계약시, 실제 제공되는 산출물은 로뎀시스템만의 특허인가요?',
-    a: '네. 로뎀시스템은 15년간 공공, 의료, 대학, 일반 대기업 등 100회 이상의 보안 연계 자문을 성공시키며 완성한 체계적인 가이드북 양식군을 보유하고 있습니다. KCS-M-04(0) 및 KCS-OZ 계열로 이어지는 100종 이상의 공식 지침, 절차서 일체를 고객사의 사내 규정에 1:1 결합 설계하여 심사 한 번에 통과할 수 있도록 무결 가이드라인을 이식합니다.',
+    a: '네. 로뎀시스템은 15년간 공공, 의료, 대학, 일반 대기업 등 100회 이상의 보안 연계 자문을 성공시키며 완성한 체계적인 가이드북 양식군을 보유하고 있습니다. ISMS-M-04(0) 및 AIMS-OZ 계열로 이어지는 100종 이상의 공식 지침, 절차서 일체를 고객사의 사내 규정에 1:1 결합 설계하여 심사 한 번에 통과할 수 있도록 무결 가이드라인을 이식합니다.',
   },
   {
     q: 'ISO 42001(AI 경영시스템)은 타 인증과 함께 진행 가능한가요?',
@@ -142,7 +143,7 @@ export default function ConsultingPackagesPage() {
     <div className="min-h-screen bg-white dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <SEO 
         title="컨설팅 패키지 및 투명 가격 안내 | 로뎀시스템" 
-        description="로뎀시스템의 투명한 가격 정책과 15년간 축적된 KCS 100여 종의 산출물을 확인하세요. 기본 패키지부터 인공지능(ISO 42001) 및 종합 ISMS-P 자문까지 최적의 견적을 제공합니다."
+        description="로뎀시스템의 투명한 가격 정책과 15년간 축적된 ISMS/AIMS 100여 종의 산출물을 확인하세요. 기본 패키지부터 인공지능(ISO 42001) 및 종합 ISMS-P 자문까지 최적의 견적을 제공합니다."
       />
       <Navbar />
 
@@ -161,7 +162,7 @@ export default function ConsultingPackagesPage() {
             <p className="text-base md:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
               매번 정가 없이 불투명하던 보안 자문 단가, 이제 설계에 맞추어 명쾌하게 제안받아 보십시오.
               <br />
-              <span className="text-brand-400 font-bold">100종 이상의 실제 보안 규정집 산출체계</span>(KCS-M-04 계열)를 완벽히 구축해 주어 한 번에 합격하도록 돕습니다.
+              <span className="text-brand-400 font-bold">100종 이상의 실제 보안 규정집 산출체계</span>(ISMS/AIMS 계열)를 완벽히 구축해 주어 한 번에 합격하도록 돕습니다.
             </p>
           </div>
         </section>
@@ -266,7 +267,7 @@ export default function ConsultingPackagesPage() {
               </h2>
               <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mt-2">
                 컨설팅 완료 시 즉시 귀사 사명으로 승인 가능한 정식 기안용 지침 및 운영 관리 대장 목록의 핵심 부분입니다. 
-                로뎀이 보유한 탄탄한 규정 표준(KCS 계열)을 직접 확인해 보세요.
+                로뎀이 보유한 탄탄한 규정 표준(ISMS/AIMS 등 표준형 지침 계열)을 직접 확인해 보세요.
               </p>
             </div>
 
@@ -275,7 +276,7 @@ export default function ConsultingPackagesPage() {
               <Search className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
-                placeholder="문서명 또는 예) KCS-OZ 검색..."
+                placeholder="문서명 또는 예) ISMS, AIMS 검색..."
                 value={showDocSearch}
                 onChange={(e) => setShowDocSearch(e.target.value)}
                 className="w-full pl-11 pr-4 py-2.5 rounded-xl text-sm border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/30 font-medium"
@@ -328,7 +329,7 @@ export default function ConsultingPackagesPage() {
                 정식 통합 산출물 목록 샘플 PDF 배포
               </h3>
               <p className="text-sm text-brand-100 max-w-2xl mx-auto mb-6">
-                현재 보신 KCS 계약 전용 가이드 목록 전체와 공점검 핵심 조치 양식을 일부 가공 보정한 무상 가독본을 E-Mail로 배부해 드립니다.
+                현재 보신 ISMS/AIMS 계약 전용 가이드 목록 전체와 공점검 핵심 조치 양식을 일부 가공 보정한 무상 가독본을 E-Mail로 배부해 드립니다.
               </p>
               <Link
                 to="/inquiries?type=sample"
@@ -358,7 +359,7 @@ export default function ConsultingPackagesPage() {
 
               <div className="p-6 md:p-8 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white border border-slate-800 shadow-sm relative overflow-hidden">
                 <div className="absolute top-4 right-4 bg-brand-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full animate-pulse uppercase tracking-wider">
-                  KCS-AI 420
+                  AIMS-42001
                 </div>
                 <Brain className="text-brand-400 mb-4" size={36} />
                 <h3 className="text-lg md:text-xl font-bold mb-3">ISO 42001 (인공지능 경영시스템) 자문</h3>

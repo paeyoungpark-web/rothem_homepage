@@ -26,7 +26,7 @@ export default function TeamSection() {
         if (results.length === 0) {
           // Fallback if empty
           results.push(
-            { id: '1', name: '박배영', role: '대표이사', specialty: 'ISMS-P, ISO 인증', photoUrl: '/images/ceo_profile.svg' },
+            { id: '1', name: '박배영', role: '대표이사', specialty: 'ISMS-P, ISO 인증', photoUrl: '/images/ceo_profile.jpg' },
             { id: '2', name: '김보안', role: '수석 컨설턴트', specialty: '의료/금융 보안 컨설팅', photoUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200&h=200' },
             { id: '3', name: '이해커', role: '책임 연구원', specialty: '모의해킹, 취약점 진단', photoUrl: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200&h=200' }
           );

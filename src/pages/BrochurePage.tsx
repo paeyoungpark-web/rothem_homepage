@@ -331,7 +331,7 @@ export default function BrochurePage() {
               <div className="p-6 md:p-10 space-y-12">
                 
                 {/* 1. ISO/IEC 27001:2022 */}
-                <div className="p-6 md:p-8 rounded-2xl bg-slate-50 dark:bg-slate-905 border border-slate-100 dark:border-slate-7 productive-card">
+                <div className="p-6 md:p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 productive-card">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-500 dark:text-indigo-400 flex items-center justify-center font-black">
@@ -407,7 +407,7 @@ export default function BrochurePage() {
                 </div>
 
                 {/* 2. ISO/IEC 27701:2025 */}
-                <div className="p-6 md:p-8 rounded-2xl bg-slate-50 dark:bg-slate-905 border border-slate-100 dark:border-slate-7 productive-card">
+                <div className="p-6 md:p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 productive-card">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-teal-50 dark:bg-teal-950 text-teal-500 dark:text-teal-400 flex items-center justify-center font-black">
@@ -497,7 +497,7 @@ export default function BrochurePage() {
               <div className="p-6 md:p-10 space-y-12">
                 
                 {/* 3. ISO/IEC 42001:2023 */}
-                <div className="p-6 md:p-8 rounded-2xl bg-slate-50 dark:bg-slate-905 border border-slate-100 dark:border-slate-7 productive-card">
+                <div className="p-6 md:p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 productive-card">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-200 dark:border-slate-700 pb-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-500 dark:text-emerald-400 flex items-center justify-center font-black">
@@ -558,7 +558,7 @@ export default function BrochurePage() {
                       <select 
                         value={deliverableFilter}
                         onChange={(e) => setDeliverableFilter(e.target.value)}
-                        className="bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-705 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 outline-none"
+                        className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 outline-none"
                       >
                         <option value="all">전체 산출물 보기</option>
                         <option value="P1">P1. 환경분석 (2종)</option>
@@ -583,7 +583,7 @@ export default function BrochurePage() {
                         {filteredDeliverables.map((item, index) => (
                           <tr key={index} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
                             <td className="p-4">
-                              <span className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-755 text-[10px] font-extrabold text-slate-600 dark:text-slate-300">
+                              <span className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-[10px] font-extrabold text-slate-600 dark:text-slate-300">
                                 {item.stage}
                               </span>
                             </td>

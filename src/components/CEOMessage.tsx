@@ -18,11 +18,11 @@ export default function CEOMessage() {
           >
             <div className="aspect-[4/5] rounded-[24px] overflow-hidden bg-slate-100 relative shadow-[0_20px_40px_rgba(0,0,0,0.08)]">
               <img 
-                src={settings.profileImage || "/images/ceo_profile.svg"} 
+                src={settings.profileImage || "/images/ceo_profile.jpg"} 
                 alt="CEO 박배영" 
                 referrerPolicy="no-referrer"
                 onError={(e) => {
-                  e.currentTarget.src = "/images/ceo_profile.svg";
+                  e.currentTarget.src = "/images/ceo_profile.jpg";
                 }}
                 className="w-full h-full object-cover" 
               />
