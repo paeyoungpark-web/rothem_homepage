@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { KAKAO_CHANNEL_URL } from '../lib/constants';
+import { Link } from 'react-router-dom';
 
 export default function HeroSection() {
   return (
@@ -41,17 +42,20 @@ export default function HeroSection() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-16">
-              <a href="/#solutions" className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold rounded-xl text-white bg-brand-500 hover:bg-brand-400 hover:-translate-y-1 transition-all shadow-[0_10px_20px_rgba(15,110,86,0.3)]">
+              <Link to="/#solutions" className="inline-flex items-center justify-center px-6 py-4 text-base font-bold rounded-xl text-white bg-brand-500 hover:bg-brand-400 hover:-translate-y-1 transition-all shadow-[0_10px_20px_rgba(15,110,86,0.2)]">
                 솔루션 살펴보기
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+              <Link to="/brochure" className="inline-flex items-center justify-center px-6 py-4 text-base font-bold rounded-xl text-brand-100 bg-white/10 border border-white/20 hover:bg-white/20 hover:-translate-y-1 transition-all">
+                ✨ 프리미엄 소개서 보기
+              </Link>
               <a 
                 href={KAKAO_CHANNEL_URL}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold rounded-xl text-brand-800 bg-[#FEE500] hover:bg-[#FEE500]/90 hover:-translate-y-1 transition-all shadow-[0_10px_20px_rgba(254,229,0,0.15)]"
+                className="inline-flex items-center justify-center px-6 py-4 text-base font-bold rounded-xl text-brand-800 bg-[#FEE500] hover:bg-[#FEE500]/90 hover:-translate-y-1 transition-all shadow-[0_10px_20px_rgba(254,229,0,0.15)]"
               >
-                카카오톡으로 문의하기
+                카카오톡 문의
               </a>
             </div>
 

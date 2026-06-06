@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShieldAlert, ArrowRight, Activity, Clock } from 'lucide-react';
 import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db, handleFirestoreError, OperationType } from '../firebase';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 
@@ -42,6 +42,11 @@ export default function DailyThreatSection() {
         
       } catch (err) {
         console.error('Failed to fetch threat/insights', err);
+        try {
+          handleFirestoreError(err, OperationType.LIST, 'daily_threats_or_insights');
+        } catch (specErr) {
+          console.error("Caught spec error safely in DailyThreatSection:", specErr);
+        }
       } finally {
         setLoading(false);
       }

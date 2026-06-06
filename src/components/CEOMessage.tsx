@@ -6,7 +6,7 @@ export default function CEOMessage() {
   const { settings } = useSettings();
 
   return (
-    <section className="py-[120px] bg-white border-t border-slate-100">
+    <section id="ceo-message" className="py-[120px] bg-white border-t border-slate-100">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-24">
           
@@ -17,11 +17,15 @@ export default function CEOMessage() {
             className="w-full md:w-5/12 flex-shrink-0"
           >
             <div className="aspect-[4/5] rounded-[24px] overflow-hidden bg-slate-100 relative shadow-[0_20px_40px_rgba(0,0,0,0.08)]">
-              {settings.profileImage ? (
-                <img src={settings.profileImage} alt="CEO 박배영" className="w-full h-full object-cover" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-slate-400">CEO Photo</div>
-              )}
+              <img 
+                src={settings.profileImage || "/images/ceo_profile.svg"} 
+                alt="CEO 박배영" 
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  e.currentTarget.src = "/images/ceo_profile.svg";
+                }}
+                className="w-full h-full object-cover" 
+              />
               <div className="absolute bottom-6 left-6 right-6 p-6 bg-white/90 backdrop-blur-md rounded-2xl">
                 <div className="font-bold text-slate-900 text-xl mb-1">{settings.company?.ceo || '박배영'}</div>
                 <div className="text-brand-500 font-medium">로뎀시스템 대표이사</div>

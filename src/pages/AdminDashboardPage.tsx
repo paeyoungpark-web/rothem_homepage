@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
-import { collection, getDocs, doc, setDoc, getDoc, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, getDocs, doc, setDoc, getDoc, addDoc, serverTimestamp, onSnapshot, deleteDoc, updateDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { Shield, Users, FileText, Settings, BarChart2, Mail, Image as ImageIcon, AlertTriangle } from 'lucide-react';
@@ -16,20 +16,34 @@ export default function AdminDashboardPage() {
   const [counters, setCounters] = useState({ consulting: 0, clients: 0, certs: 0, education: 0, smartFactory: 0 });
   const [notice, setNotice] = useState({ active: false, text: '', link: '' });
   const [generatingThreat, setGeneratingThreat] = useState(false);
+  const [insights, setInsights] = useState<any[]>([]);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    let unsubscribeInsights: (() => void) | null = null;
+    const unsubscribeAuth = auth.onAuthStateChanged((user) => {
       const adminEmails = ['paeyoung.park@gmail.com', 'rothem@rothemsystem.com', 'leeyw@rothemsystem.com'];
       if (user?.email && adminEmails.includes(user.email)) {
         setIsAdmin(true);
         loadSettings();
+        
+        // Listen to security insights
+        unsubscribeInsights = onSnapshot(collection(db, 'insights'), (snapshot) => {
+          const list: any[] = [];
+          snapshot.forEach(docSnap => {
+            list.push({ id: docSnap.id, ...docSnap.data() });
+          });
+          setInsights(list);
+        });
       } else {
         setIsAdmin(false);
         navigate('/');
       }
       setLoading(false);
     });
-    return () => unsubscribe();
+    return () => {
+      unsubscribeAuth();
+      if (unsubscribeInsights) (unsubscribeInsights as any)();
+    };
   }, [navigate]);
 
   const loadSettings = async () => {
@@ -107,6 +121,7 @@ Return only the raw JSON.`;
           <nav className="flex flex-col gap-2">
             {[
               { id: 'overview', icon: <BarChart2 size={20}/>, label: '오버뷰' },
+              { id: 'security_insights', icon: <FileText size={20}/>, label: '인사이츠 (자동/수동)' },
               { id: 'inquiries', icon: <Mail size={20}/>, label: '문의 관리' },
               { id: 'threats', icon: <AlertTriangle size={20}/>, label: '오늘의 위협 생성' },
               { id: 'leads', icon: <FileText size={20}/>, label: '체크리스트 (리드)' },
@@ -211,6 +226,124 @@ Return only the raw JSON.`;
                 </div>
                 <button onClick={saveCounters} className="px-4 py-2 bg-blue-600 text-white rounded-lg">저장</button>
               </section>
+            </div>
+          )}
+
+          {activeTab === 'security_insights' && (
+            <div>
+              <div className="flex md:flex-row flex-col justify-between items-start md:items-center gap-4 mb-6">
+                <div>
+                  <h3 className="text-2xl font-bold text-slate-900">보안 인사이트 통합 관리</h3>
+                  <p className="text-slate-500 text-sm mt-1">AI 자동 예약, 인증 관리, 외부 API 피드를 통한 하이브리드 인사이트 전광판을 관리합니다.</p>
+                </div>
+                <button 
+                  onClick={() => navigate('/insights')} 
+                  className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+                >
+                  게시판 이동
+                </button>
+              </div>
+
+              {/* Stats Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div className="bg-slate-50 rounded-xl p-5 border border-slate-200 shadow-xs">
+                  <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">전체 등록 게시물</span>
+                  <p className="text-3xl font-bold text-slate-900 mt-1">{insights.length}개</p>
+                </div>
+                <div className="bg-emerald-50/50 rounded-xl p-5 border border-emerald-100 shadow-xs animate-fade-in">
+                  <span className="text-xs text-emerald-600 font-bold uppercase tracking-wider">공개 중인 게시물</span>
+                  <p className="text-3xl font-bold text-emerald-900 mt-1">
+                    {insights.filter(i => !i.status || i.status === 'published').length}개
+                  </p>
+                </div>
+                <div className="bg-amber-50/50 rounded-xl p-5 border border-amber-100 shadow-xs animate-fade-in">
+                  <span className="text-xs text-amber-600 font-bold uppercase tracking-wider">승인 대기 중 (Draft)</span>
+                  <p className="text-3xl font-bold text-amber-900 mt-1">
+                    {insights.filter(i => i.status === 'draft').length}개
+                  </p>
+                </div>
+              </div>
+
+              {/* Table list */}
+              <div className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-xs">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs font-bold uppercase tracking-wider">
+                        <th className="p-4 pl-6">카테고리</th>
+                        <th className="p-4">제목</th>
+                        <th className="p-4">작성 방식</th>
+                        <th className="p-4">등록일</th>
+                        <th className="p-4">상태</th>
+                        <th className="p-4 pr-6 text-right">작업</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 text-sm">
+                      {insights.length === 0 ? (
+                        <tr>
+                          <td colSpan={6} className="p-12 text-center text-slate-400 font-medium">등록된 보안 인사이트가 없습니다.</td>
+                        </tr>
+                      ) : (
+                        insights.map(item => (
+                          <tr key={item.id} className="hover:bg-slate-50/50 transition-colors">
+                            <td className="p-4 pl-6">
+                              <span className="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full text-xs font-bold">
+                                {item.category || '보안'}
+                              </span>
+                            </td>
+                            <td className="p-4 font-bold text-slate-800 max-w-xs truncate">{item.title}</td>
+                            <td className="p-4 text-slate-600 text-xs">
+                              {item.createdBy === 'auto' ? '🤖 AI 자동 수집' : item.createdBy === 'api' ? '🔌 API 외부입력' : '👤 관리자 작성'}
+                            </td>
+                            <td className="p-4 text-slate-400 text-xs">{item.date}</td>
+                            <td className="p-4">
+                              {item.status === 'draft' ? (
+                                <span className="inline-flex text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-full text-xs font-bold">대기 중</span>
+                              ) : (
+                                <span className="inline-flex text-emerald-700 bg-emerald-50 border border-emerald-150 px-2.5 py-0.5 rounded-full text-xs font-bold">공개 완료</span>
+                              )}
+                            </td>
+                            <td className="p-4 pr-6 text-right flex justify-end gap-2 items-center">
+                              {item.status === 'draft' && (
+                                <button
+                                  onClick={async () => {
+                                    try {
+                                      await updateDoc(doc(db, 'insights', item.id), {
+                                        status: 'published',
+                                        updatedAt: serverTimestamp()
+                                      });
+                                    } catch (err) {
+                                      console.error(err);
+                                      alert('승인 중 오류가 발생했습니다.');
+                                    }
+                                  }}
+                                  className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer shadow-xs"
+                                >
+                                  승인
+                                </button>
+                              )}
+                              <button
+                                onClick={async () => {
+                                  if (!confirm('정말 삭제하시겠습니까?')) return;
+                                  try {
+                                    await deleteDoc(doc(db, 'insights', item.id));
+                                  } catch (err) {
+                                    console.error(err);
+                                    alert('삭제 중 오류가 발생했습니다.');
+                                  }
+                                }}
+                                className="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-100 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                              >
+                                삭제
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           )}
 

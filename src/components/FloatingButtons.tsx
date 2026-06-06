@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowUp, MessageCircle, Home } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import AIChatbot from './AIChatbot';
 
 export default function FloatingButtons() {
   const [showTopBtn, setShowTopBtn] = useState(false);
@@ -34,13 +35,14 @@ export default function FloatingButtons() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             onClick={scrollToTop}
-            className="w-12 h-12 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-all"
+            className="w-12 h-12 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-all mb-2"
             title="Scroll to Top"
           >
             <ArrowUp size={24} />
           </motion.button>
         )}
       </AnimatePresence>
+      <AIChatbot />
     </div>
   );
 }

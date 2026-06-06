@@ -36,9 +36,9 @@ export default function Footer() {
           <div className="flex flex-col">
             <h4 className="text-white font-bold mb-6">보안 솔루션</h4>
             <ul className="space-y-3">
-              <li><a href="/products" className="text-slate-400 hover:text-brand-400 text-sm transition-colors">취급 제품 (eWalker DLP 등)</a></li>
-              <li><a href="/#case-studies" className="text-slate-400 hover:text-brand-400 text-sm transition-colors">솔루션 도입사례</a></li>
-              <li><a href="/#contact" className="text-slate-400 hover:text-brand-400 text-sm transition-colors">견적 문의</a></li>
+              <li><Link to="/products" className="text-slate-400 hover:text-brand-400 text-sm transition-colors">취급 제품 (eWalker DLP 등)</Link></li>
+              <li><Link to="/#case-studies" className="text-slate-400 hover:text-brand-400 text-sm transition-colors">솔루션 도입사례</Link></li>
+              <li><Link to="/#contact" className="text-slate-400 hover:text-brand-400 text-sm transition-colors">견적 문의</Link></li>
             </ul>
           </div>
 
@@ -46,10 +46,10 @@ export default function Footer() {
           <div className="flex flex-col">
             <h4 className="text-white font-bold mb-6">컨설팅 & 자문</h4>
             <ul className="space-y-3">
-              <li><a href="/#consulting" className="text-slate-400 hover:text-brand-400 text-sm transition-colors">ISO 27001 / 27701 인증 컨설팅</a></li>
-              <li><a href="/#consulting" className="text-slate-400 hover:text-brand-400 text-sm transition-colors">개인정보보호 컨설팅</a></li>
-              <li><a href="/#advisory" className="text-slate-400 hover:text-brand-400 text-sm transition-colors">CISO 자문 서비스</a></li>
-              <li><a href="/#advisory" className="text-slate-400 hover:text-brand-400 text-sm transition-colors">경영진 보안 자문</a></li>
+              <li><Link to="/brochure" className="text-brand-400 font-semibold hover:text-brand-300 text-sm transition-colors">✨ 프리미엄 마스터 소개서</Link></li>
+              <li><Link to="/#consulting" className="text-slate-400 hover:text-brand-400 text-sm transition-colors">ISO 27001 / 27701 인증 컨설팅</Link></li>
+              <li><Link to="/#consulting" className="text-slate-400 hover:text-brand-400 text-sm transition-colors">개인정보보호 컨설팅</Link></li>
+              <li><Link to="/#advisory" className="text-slate-400 hover:text-brand-400 text-sm transition-colors">CISO 자문 서비스</Link></li>
             </ul>
           </div>
 
@@ -79,11 +79,12 @@ export default function Footer() {
         
         <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-slate-500 text-sm">
-            &copy; 2010-{currentYear} 로뎀시스템. All rights reserved.
+            &copy; {currentYear} 로뎀시스템. All rights reserved.
           </p>
           <div className="flex gap-4">
-            <a href="/privacy" className="text-sm text-slate-500 hover:text-white transition-colors">개인정보처리방침</a>
-            <a href="/profile" className="text-sm text-slate-500 hover:text-white transition-colors">CEO 프로필</a>
+            <Link to="/privacy" className="text-sm text-slate-500 hover:text-white transition-colors">개인정보처리방침</Link>
+            <Link to="/profile" className="text-sm text-slate-500 hover:text-white transition-colors">CEO 프로필</Link>
+            <Link to="/brochure" className="text-sm text-slate-500 hover:text-white transition-colors">프리미엄 마스터 소개서</Link>
           </div>
         </div>
       </div>

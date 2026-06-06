@@ -2,7 +2,8 @@ import { motion } from 'motion/react';
 import { Shield, ArrowRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db, handleFirestoreError, OperationType } from '../firebase';
+import { Link } from 'react-router-dom';
 
 export default function SolutionShowcase() {
   const [extraProducts, setExtraProducts] = useState<any[]>([]);
@@ -17,6 +18,11 @@ export default function SolutionShowcase() {
         }
       } catch (err) {
         console.error("Failed to fetch extra products", err);
+        try {
+          handleFirestoreError(err, OperationType.LIST, 'products');
+        } catch (specErr) {
+          console.error("Caught spec error safely in SolutionShowcase:", specErr);
+        }
       }
     }
     fetchProducts();
@@ -52,12 +58,12 @@ export default function SolutionShowcase() {
             </p>
             
             <div className="flex items-center gap-4 mt-auto">
-              <a href="/products" className="inline-flex items-center px-6 py-3 rounded-xl bg-slate-900 text-white font-bold hover:bg-brand-500 transition-colors">
+              <Link to="/products" className="inline-flex items-center px-6 py-3 rounded-xl bg-slate-900 text-white font-bold hover:bg-brand-500 transition-colors">
                 자세히 보기
-              </a>
-              <a href="/#contact" className="inline-flex items-center px-6 py-3 rounded-xl bg-white text-slate-900 font-bold border border-slate-200 hover:border-brand-500 hover:text-brand-500 transition-colors">
+              </Link>
+              <Link to="/#contact" className="inline-flex items-center px-6 py-3 rounded-xl bg-white text-slate-900 font-bold border border-slate-200 hover:border-brand-500 hover:text-brand-500 transition-colors">
                 견적 요청
-              </a>
+              </Link>
             </div>
           </motion.div>
 
@@ -75,9 +81,9 @@ export default function SolutionShowcase() {
                 >
                   <h4 className="text-2xl font-bold text-slate-900 mb-3">{prod.name || '추가 보안 솔루션'}</h4>
                   <p className="text-slate-600 mb-6">{prod.description || '엔터프라이즈 보안을 위한 부가 솔루션입니다.'}</p>
-                  <a href="/products" className="inline-flex items-center text-brand-500 font-bold hover:text-brand-400">
+                  <Link to="/products" className="inline-flex items-center text-brand-500 font-bold hover:text-brand-400">
                     알아보기 <ArrowRight size={18} className="ml-1" />
-                  </a>
+                  </Link>
                 </motion.div>
               ))}
             </div>
@@ -93,9 +99,9 @@ export default function SolutionShowcase() {
                 <div className="text-slate-400 font-bold mb-2">보안관제 솔루션</div>
                 <h4 className="text-2xl font-bold text-slate-900 mb-3">통합 로그 분석 (SIEM)</h4>
                 <p className="text-slate-600 mb-6">다양한 장비의 로그를 수집하고 이상 징후를 탐지합니다.</p>
-                <a href="/products" className="inline-flex items-center text-brand-500 font-bold hover:text-brand-400">
+                <Link to="/products" className="inline-flex items-center text-brand-500 font-bold hover:text-brand-400">
                   알아보기 <ArrowRight size={18} className="ml-1" />
-                </a>
+                </Link>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
@@ -107,9 +113,9 @@ export default function SolutionShowcase() {
                 <div className="text-slate-400 font-bold mb-2">취약점 점검</div>
                 <h4 className="text-2xl font-bold text-slate-900 mb-3">웹 취약점 진단 솔루션</h4>
                 <p className="text-slate-600 mb-6">최신 위협 동향을 반영한 자동화된 취약점 점검을 제공합니다.</p>
-                <a href="/products" className="inline-flex items-center text-brand-500 font-bold hover:text-brand-400">
+                <Link to="/products" className="inline-flex items-center text-brand-500 font-bold hover:text-brand-400">
                   알아보기 <ArrowRight size={18} className="ml-1" />
-                </a>
+                </Link>
               </motion.div>
             </div>
           )}

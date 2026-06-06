@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
-import { db } from '../firebase';
+import { db, handleFirestoreError, OperationType } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
 interface Counters {
@@ -68,7 +68,12 @@ export default function PerformanceCounter() {
           });
         }
       } catch (e) {
-        console.error("Failed to load counters");
+        console.error("Failed to load counters", e);
+        try {
+          handleFirestoreError(e, OperationType.GET, 'site_settings/counters');
+        } catch (specErr) {
+          console.error("Caught spec error safely in PerformanceCounter:", specErr);
+        }
       }
     }
     fetchCounters();
@@ -77,11 +82,13 @@ export default function PerformanceCounter() {
   return (
     <section className="py-[100px] bg-brand-500">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-6 divide-x-0 md:divide-x divide-white/20">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-12 lg:gap-6 divide-y lg:divide-y-0 divide-white/20 lg:divide-x">
           <CountUp to={counters.clients} label="고객사" suffix="개+" />
           <CountUp to={counters.devices} label="운영 장비" suffix="대+" />
           <CountUp to={counters.consulting} label="컨설팅 수행" suffix="건+" />
           <CountUp to={counters.years} label="보안 전문 경력" suffix="년+" />
+          <CountUp to={300} label="스마트공장 점검/평가/자문" suffix="건+" />
+          <CountUp to={250} label="ISO 심사" suffix="건+" />
         </div>
       </div>
     </section>

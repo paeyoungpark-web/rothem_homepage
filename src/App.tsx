@@ -16,6 +16,8 @@ import GalleryPage from './pages/GalleryPage';
 import InquiriesPage from './pages/InquiriesPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import BrochurePage from './pages/BrochurePage';
+import ConsultingPackagesPage from './pages/ConsultingPackagesPage';
 import SelfAssessmentSection from './components/SelfAssessmentSection';
 import { SettingsProvider } from './context/SettingsContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -50,6 +52,8 @@ export default function App() {
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductDetail />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/brochure" element={<BrochurePage />} />
+            <Route path="/consulting" element={<ConsultingPackagesPage />} />
             <Route path="/insights" element={<InsightsPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/inquiries" element={<InquiriesPage />} />

@@ -26,7 +26,7 @@ export default function TeamSection() {
         if (results.length === 0) {
           // Fallback if empty
           results.push(
-            { id: '1', name: '박태영', role: '대표이사', specialty: 'ISMS-P, ISO 인증', photoUrl: 'https://media.licdn.com/dms/image/v2/D5603AQHWKX_mYMTO4g/profile-displayphoto-crop_800_800/B56ZyjXY.eKkAI-/0/1772267348633' },
+            { id: '1', name: '박배영', role: '대표이사', specialty: 'ISMS-P, ISO 인증', photoUrl: '/images/ceo_profile.svg' },
             { id: '2', name: '김보안', role: '수석 컨설턴트', specialty: '의료/금융 보안 컨설팅', photoUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200&h=200' },
             { id: '3', name: '이해커', role: '책임 연구원', specialty: '모의해킹, 취약점 진단', photoUrl: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200&h=200' }
           );
@@ -40,7 +40,7 @@ export default function TeamSection() {
   }, []);
 
   return (
-    <section className="py-24 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 transition-colors">
+    <section id="team" className="py-24 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">최고의 보안 전문가 그룹</h2>
         <p className="text-slate-500 dark:text-slate-400 mb-16 max-w-2xl mx-auto">
@@ -59,7 +59,7 @@ export default function TeamSection() {
             >
               <div className="relative mb-6 mx-auto w-40 h-40 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-800 shadow-lg">
                 {member.photoUrl ? (
-                  <img src={member.photoUrl} alt={member.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <img src={member.photoUrl} alt={member.name} referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 ) : (
                   <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-400">
                     <UserCircle size={64} />

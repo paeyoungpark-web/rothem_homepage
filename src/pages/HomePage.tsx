@@ -1,13 +1,17 @@
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
+import AboutSection from '../components/AboutSection';
 import ServicesSection from '../components/ServicesSection';
 import PerformanceCounter from '../components/PerformanceCounter';
 import SolutionShowcase from '../components/SolutionShowcase';
+import CaseStudiesSection from '../components/CaseStudiesSection';
 import DailyThreatSection from '../components/DailyThreatSection';
 import CEOMessage from '../components/CEOMessage';
+import AdvisorySection from '../components/AdvisorySection';
+import CertificationsSection from '../components/CertificationsSection';
 import { ClientLogoSlider } from '../components/ExtraSections';
 import SelfDiagnosisCTA from '../components/SelfDiagnosisCTA';
-import ContactCTA from '../components/ContactCTA';
+import ContactSection from '../components/ContactSection';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
 import { useEffect } from 'react';
@@ -18,16 +22,28 @@ export default function HomePage() {
 
   useEffect(() => {
     if (location.hash) {
-      const element = document.querySelector(location.hash);
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+      // Avoid selector query crash if location.hash is invalid
+      try {
+        const element = document.querySelector(location.hash);
+        if (element) {
+          setTimeout(() => {
+            const navbarOffset = 80; // approximate sticky navbar height
+            const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+            const offsetPosition = elementPosition - navbarOffset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+          }, 150);
+        }
+      } catch (err) {
+        console.error("Hash scroll query error:", err);
       }
     } else {
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
-  }, [location]);
+  }, [location.pathname, location.hash, location.key]);
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900 transition-colors">
@@ -35,14 +51,18 @@ export default function HomePage() {
       <Navbar />
       <main>
         <HeroSection />
+        <AboutSection />
         <ServicesSection />
         <PerformanceCounter />
         <SolutionShowcase />
+        <CaseStudiesSection />
         <DailyThreatSection />
         <CEOMessage />
+        <AdvisorySection />
+        <CertificationsSection />
         <ClientLogoSlider />
         <SelfDiagnosisCTA />
-        <ContactCTA />
+        <ContactSection />
       </main>
       <Footer />
     </div>

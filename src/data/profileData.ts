@@ -49,7 +49,7 @@ export const profileData: Record<string, any> = {
             ]
           },
           {
-            name: "정보보호/보안 컨설팅 (ISO 27001, 27701, TISAX, ISMS 등)",
+            name: "정보보호/보안 컨설팅 (ISO 27001, 27701, TISAX 등)",
             points: [
               "대전교통공사, 엘앤에프, 인탑스, 한국전력기술, 한국토지주택공사 등 다수 심사",
               "삼성전자 GCRM, 에스핀테크놀러지, 한국수력원자력 등 다수 심사",
@@ -117,7 +117,7 @@ export const profileData: Record<string, any> = {
             ]
           },
           {
-            name: "InfoSec Consulting (ISO 27001, 27701, TISAX, ISMS)",
+            name: "InfoSec Consulting (ISO 27001, 27701, TISAX, etc.)",
             points: [
               "Audits for Daejeon Transportation Corp., L&F, Intops, KEPCO E&C, Samsung Electronics GCRM, KHNP, LH, etc.",
               "Security consulting for Korea Health Industry Development Institute, Yeoju City Corp, etc."

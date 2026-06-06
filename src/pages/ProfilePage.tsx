@@ -15,7 +15,7 @@ export default function ProfilePage() {
   const { i18n } = useTranslation();
   const navigate = useNavigate();
   const currentLang = i18n.language === 'ko' ? 'ko' : 'en';
-  const { settings } = useSettings();
+  const { settings, updateSettings } = useSettings();
 
   const [isAdmin, setIsAdmin] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -25,6 +25,7 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<any>(null);
   const [editData, setEditData] = useState<any>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [saveMessage, setSaveMessage] = useState('');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -65,21 +66,32 @@ export default function ProfilePage() {
       summary: fallbackData[currentLang].summary,
       history: fallbackData[currentLang].sections.career.items.map((i: string) => ({ year: '', content: i }))
     });
+    setSaveMessage('');
     setIsEditing(true);
   };
 
   const handleSave = async () => {
     try {
+      setSaveMessage(currentLang === 'ko' ? '저장 중...' : 'Saving...');
       await setDoc(doc(db, 'settings', 'ceo_profile'), {
         ...editData,
         updatedAt: serverTimestamp()
       });
       setProfile(editData);
-      setIsEditing(false);
-      alert('Profile updated successfully!');
+      
+      // Sync back base64 image immediately to site-wide header & CEOMessage avatar
+      if (editData.photoUrl) {
+        await updateSettings({ profileImage: editData.photoUrl });
+      }
+      
+      setSaveMessage(currentLang === 'ko' ? '프로필이 성공적으로 업데이트되었습니다!' : 'Profile updated successfully!');
+      setTimeout(() => {
+        setSaveMessage('');
+        setIsEditing(false);
+      }, 1500);
     } catch (err) {
       console.error(err);
-      alert('Failed to save profile');
+      setSaveMessage(currentLang === 'ko' ? '업데이트 실패' : 'Failed to save profile');
     }
   };
 
@@ -87,26 +99,54 @@ export default function ProfilePage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setUploadingImage(true);
-    const storageRef = ref(storage, `profile/\${Date.now()}_\${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    if (!file.type.startsWith('image/')) {
+      alert(currentLang === 'ko' ? '이미지 파일만 지원합니다.' : 'Only images are supported.');
+      return;
+    }
 
-    uploadTask.on('state_changed', null, 
-      (error) => {
-        console.error("Upload failed", error);
-        setUploadingImage(false);
-      }, 
-      async () => {
-        try {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          setEditData({ ...editData, photoUrl: downloadURL });
-        } catch (error) {
-          console.error(error);
-        } finally {
-          setUploadingImage(false);
+    setUploadingImage(true);
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 400;
+        const MAX_HEIGHT = 400;
+        
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
         }
-      }
-    );
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        setEditData((prev: any) => ({ ...prev, photoUrl: dataUrl }));
+        setUploadingImage(false);
+      };
+      img.onerror = () => {
+        setUploadingImage(false);
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.onerror = () => {
+      setUploadingImage(false);
+    };
+    reader.readAsDataURL(file);
   };
 
   if (loading) return <div className="min-h-screen bg-slate-50 flex items-center justify-center">Loading...</div>;
@@ -152,13 +192,26 @@ export default function ProfilePage() {
                   <X size={24} />
                 </button>
                 <h2 className="text-2xl font-bold mb-6 text-slate-900 border-b pb-4">
-                  {currentLang === 'ko' ? '프로필 편집' : 'Edit Profile'}
+                  {currentLang === 'ko' ? '프로필 편집 양식' : 'Edit Profile Form'}
                 </h2>
                 
+                {saveMessage && (
+                  <div className={`mb-6 p-4 rounded-xl flex items-center border ${
+                    saveMessage.includes('실패') || saveMessage.includes('Failed')
+                      ? 'bg-red-50 text-red-700 border-red-100'
+                      : 'bg-green-50 text-green-700 border-green-100'
+                  }`}>
+                    <CheckCircle2 size={20} className="mr-3" />
+                    <span className="font-semibold">{saveMessage}</span>
+                  </div>
+                )}
+
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Name</label>
+                      <label className="block text-sm font-bold text-slate-700 mb-2">
+                        {currentLang === 'ko' ? '이름' : 'Name'}
+                      </label>
                       <input 
                         type="text" 
                         value={editData.name} 
@@ -167,7 +220,9 @@ export default function ProfilePage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Title</label>
+                      <label className="block text-sm font-bold text-slate-700 mb-2">
+                        {currentLang === 'ko' ? '직함 (예: 대표이사)' : 'Title'}
+                      </label>
                       <input 
                         type="text" 
                         value={editData.title} 
@@ -176,7 +231,9 @@ export default function ProfilePage() {
                       />
                     </div>
                     <div className="md:col-span-2">
-                       <label className="block text-sm font-bold text-slate-700 mb-2">Subtitle</label>
+                       <label className="block text-sm font-bold text-slate-700 mb-2">
+                         {currentLang === 'ko' ? '서브타이틀 (예: ISMS-P, ISO 인증)' : 'Subtitle'}
+                       </label>
                        <input 
                         type="text" 
                         value={editData.subtitle} 
@@ -187,7 +244,9 @@ export default function ProfilePage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Summary</label>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">
+                      {currentLang === 'ko' ? '소개 (약력 요약)' : 'Summary'}
+                    </label>
                     <textarea 
                       value={editData.summary} 
                       onChange={e => setEditData({...editData, summary: e.target.value})}
@@ -197,39 +256,62 @@ export default function ProfilePage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Profile Photo</label>
-                    <div className="flex items-center gap-4">
-                      {editData.photoUrl && (
-                        <div className="relative group">
-                          <img src={editData.photoUrl} alt="Preview" className="w-16 h-16 rounded-full object-cover border" />
+                    <label className="block text-sm font-bold text-slate-700 mb-2">
+                      {currentLang === 'ko' ? '대표 프로필 사진 업로드' : 'Profile Photo Upload'}
+                    </label>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 border border-slate-100 rounded-2xl bg-slate-50/50">
+                      <div className="relative group shrink-0">
+                        <img 
+                          src={editData.photoUrl || "/images/ceo_profile.svg"} 
+                          alt="Preview" 
+                          onError={(e) => {
+                            e.currentTarget.src = "/images/ceo_profile.svg";
+                          }}
+                          className="w-20 h-20 rounded-full object-cover border-2 border-white shadow-sm" 
+                        />
+                        {editData.photoUrl && (
                           <button
+                            type="button"
                             onClick={() => setEditData({...editData, photoUrl: ''})}
-                            className="absolute -top-1 -right-1 w-5 h-5 bg-black/60 hover:bg-red-600 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-[10px]"
-                            title="Delete Photo"
+                            className="absolute -top-1 -right-1 w-6 h-6 bg-red-600 text-white rounded-full flex items-center justify-center shadow-md hover:bg-red-700 transition-colors text-xs"
+                            title={currentLang === 'ko' ? '기본 이미지로 리셋' : 'Reset to default logo'}
                           >
                             ×
                           </button>
-                        </div>
-                      )}
-                      <input 
-                        type="file" 
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        disabled={uploadingImage}
-                        className="text-sm file:mr-4 file:py-2.5 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                      />
-                      {uploadingImage && <span className="text-sm text-blue-600">Uploading...</span>}
+                        )}
+                      </div>
+                      <div className="flex-grow">
+                        <input 
+                          type="file" 
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          disabled={uploadingImage}
+                          className="text-xs md:text-sm file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs md:file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer disabled:opacity-50"
+                        />
+                        <p className="text-xs text-slate-400 mt-2">
+                          {currentLang === 'ko' 
+                            ? '※ 업로드 시 브라우저 내에서 가로세로 400px 수준으로 자동 리사이징 및 압축됩니다.' 
+                            : '※ Images will be automatically resized to 400px and compressed on selection.'}
+                        </p>
+                        {uploadingImage && (
+                          <span className="text-xs font-bold text-blue-600 block mt-1 animate-pulse">
+                            {currentLang === 'ko' ? '처리 중...' : 'Processing image...'}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
 
                   <div>
                      <div className="flex justify-between items-center mb-4">
-                        <label className="block text-sm font-bold text-slate-700">Career History</label>
+                        <label className="block text-sm font-bold text-slate-700">
+                          {currentLang === 'ko' ? '경력 및 주요 실적 (연도별)' : 'Career History'}
+                        </label>
                         <button 
                           onClick={() => setEditData({...editData, history: [...editData.history, {year: '', content: ''}]})}
-                          className="text-sm text-blue-600 font-medium hover:underline"
+                          className="text-sm text-blue-600 font-bold hover:underline"
                         >
-                          + Add Item
+                          {currentLang === 'ko' ? '+ 항목 추가' : '+ Add Item'}
                         </button>
                      </div>
                      <div className="space-y-3">
@@ -237,18 +319,18 @@ export default function ProfilePage() {
                            <div key={idx} className="flex gap-3">
                               <input 
                                 type="text"
-                                placeholder="Year (e.g. 2024)"
+                                placeholder={currentLang === 'ko' ? '연도 (예: 2026)' : 'Year (e.g. 2026)'}
                                 value={h.year}
                                 onChange={e => {
                                   const nh = [...editData.history];
                                   nh[idx].year = e.target.value;
                                   setEditData({...editData, history: nh});
                                 }}
-                                className="w-1/4 p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none"
+                                className="w-1/4 p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none text-center font-bold"
                               />
                               <input 
                                 type="text"
-                                placeholder="Details..."
+                                placeholder={currentLang === 'ko' ? '상세 내역...' : 'Details...'}
                                 value={h.content}
                                 onChange={e => {
                                   const nh = [...editData.history];
@@ -277,16 +359,17 @@ export default function ProfilePage() {
                 <div className="mt-8 flex justify-end gap-3 border-t pt-6">
                   <button 
                     onClick={() => setIsEditing(false)}
-                    className="px-6 py-2.5 font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+                    className="px-6 py-2.5 font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors text-sm"
                   >
-                    Cancel
+                    {currentLang === 'ko' ? '취소' : 'Cancel'}
                   </button>
                   <button 
                     onClick={handleSave}
-                    className="px-6 py-2.5 font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors flex items-center gap-2"
+                    disabled={uploadingImage}
+                    className="px-6 py-2.5 font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors flex items-center gap-2 text-sm disabled:opacity-50"
                   >
                     <Save size={18} />
-                    Save Changes
+                    {currentLang === 'ko' ? '저장하기' : 'Save Changes'}
                   </button>
                 </div>
               </div>
@@ -303,8 +386,12 @@ export default function ProfilePage() {
               >
                 <div className="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-blue-50 shadow-md mb-6 relative bg-blue-100 flex items-center justify-center">
                   <img 
-                    src={data.photoUrl || settings.profileImage || "https://media.licdn.com/dms/image/v2/D5603AQHWKX_mYMTO4g/profile-displayphoto-crop_800_800/B56ZyjXY.eKkAI-/0/1772267348633?e=1779321600&v=beta&t=kRXt0Qt1IDL_iugfHNazIyfulwbK3pL7rd8xjORQgUQ"} 
+                    src={data.photoUrl || settings.profileImage || "/images/ceo_profile.svg"} 
                     alt={data.name}
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      e.currentTarget.src = "/images/ceo_profile.svg";
+                    }}
                     className="w-full h-full object-cover"
                   />
                 </div>

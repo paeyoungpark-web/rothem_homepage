@@ -70,18 +70,45 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
-    async function loadCompany() {
+    async function loadAllSettings() {
       try {
-        const snap = await getDoc(doc(db, 'site_settings', 'company'));
-        if (snap.exists()) {
-          setSettings(prev => ({ ...prev, company: snap.data() as CompanyInfo }));
-        }
-      } catch (err) {}
+        const [companySnap, assetsSnap, activitiesSnap] = await Promise.all([
+          getDoc(doc(db, 'site_settings', 'company')),
+          getDoc(doc(db, 'site_settings', 'assets')),
+          getDoc(doc(db, 'site_settings', 'activities'))
+        ]);
+        
+        setSettings(prev => {
+          const updated = { ...prev };
+          if (companySnap.exists()) {
+            updated.company = companySnap.data() as CompanyInfo;
+          }
+          if (assetsSnap.exists()) {
+            const data = assetsSnap.data();
+            updated.logoImage = data.logoImage || null;
+            updated.profileImage = data.profileImage || null;
+            
+            // Sync to local cache
+            if (data.logoImage) localStorage.setItem('site_logo', data.logoImage);
+            if (data.profileImage) localStorage.setItem('site_profile', data.profileImage);
+          }
+          if (activitiesSnap.exists()) {
+            const data = activitiesSnap.data();
+            updated.activities = data.activities || [];
+            
+            // Sync to local cache
+            localStorage.setItem('site_activities', JSON.stringify(data.activities || []));
+          }
+          return updated;
+        });
+      } catch (err) {
+        console.warn("Failed to load settings from firestore:", err);
+      }
     }
-    loadCompany();
+    loadAllSettings();
   }, []);
 
-  const updateSettings = (newSettings: Partial<SiteSettings>) => {
+  const updateSettings = async (newSettings: Partial<SiteSettings>) => {
     setSettings(prev => {
       const updated = { ...prev, ...newSettings };
       if (updated.logoImage !== prev.logoImage) {
@@ -97,6 +124,24 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       }
       return updated;
     });
+
+    // Write-through to Firestore so all visitors see the changes globally
+    try {
+      if (newSettings.company !== undefined) {
+        await setDoc(doc(db, 'site_settings', 'company'), newSettings.company);
+      }
+      if (newSettings.logoImage !== undefined || newSettings.profileImage !== undefined) {
+        const assetsUpdates: any = {};
+        if (newSettings.logoImage !== undefined) assetsUpdates.logoImage = newSettings.logoImage;
+        if (newSettings.profileImage !== undefined) assetsUpdates.profileImage = newSettings.profileImage;
+        await setDoc(doc(db, 'site_settings', 'assets'), assetsUpdates, { merge: true });
+      }
+      if (newSettings.activities !== undefined) {
+        await setDoc(doc(db, 'site_settings', 'activities'), { activities: newSettings.activities });
+      }
+    } catch (err) {
+      console.error("Failed to persist settings changes to Firestore:", err);
+    }
   };
 
   const updateCompany = async (info: CompanyInfo) => {

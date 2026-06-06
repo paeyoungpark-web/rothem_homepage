@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f1f5f9" />
+      <stop offset="50%" stop-color="#cbd5e1" />
+      <stop offset="100%" stop-color="#94a3b8" />
+    </linearGradient>
+
+    <!-- Skin Gradient -->
+    <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fff0e5" />
+      <stop offset="60%" stop-color="#fcd3ca" />
+      <stop offset="100%" stop-color="#f9b3a5" />
+    </linearGradient>
+
+    <!-- Skin Shadow Gradient -->
+    <linearGradient id="skinShadow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e09d8f" opacity="0.4" />
+      <stop offset="100%" stop-color="#cbd5e1" opacity="0" />
+    </linearGradient>
+
+    <!-- Hair Gradient -->
+    <linearGradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="40%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+
+    <!-- Blazer Gradient -->
+    <linearGradient id="blazerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#475569" />
+      <stop offset="50%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+
+    <!-- Blazer Lapel Gradient -->
+    <linearGradient id="lapelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#64748b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+
+    <!-- Turtleneck Gradient -->
+    <linearGradient id="turtleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="30%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+
+    <!-- Soft Drop Shadow -->
+    <filter id="dropShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.12" />
+    </filter>
+
+    <filter id="softShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+      <feOffset dx="0" dy="3" />
+      <feComponentTransfer><feFuncA type="linear" slope="0.15" /></feComponentTransfer>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="url(#bgGrad)" />
+
+  <g filter="url(#dropShadow)">
+    <!-- Shoulders / Blazer Base -->
+    <path d="M 50,500 L 50,440 C 50,390 100,360 160,350 L 240,350 C 300,360 350,390 350,440 L 350,500 Z" fill="url(#blazerGrad)" />
+
+    <!-- Turtleneck Inner -->
+    <path d="M 130,350 C 130,350 135,280 200,280 C 265,280 270,350 270,350 Z" fill="url(#turtleGrad)" />
+    <!-- Turtleneck Collar/Fold lines -->
+    <path d="M 140,290 C 140,290 200,305 260,290" fill="none" stroke="#334155" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M 145,310 C 145,310 200,325 255,310" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" />
+    <path d="M 150,330 C 150,330 200,342 250,330" fill="none" stroke="#1e293b" stroke-width="2" stroke-linecap="round" />
+
+    <!-- Neck -->
+    <path d="M 160,290 L 160,260 C 160,260 200,275 240,260 L 240,290 Z" fill="url(#skinGrad)" />
+    <path d="M 160,260 C 160,260 200,275 240,260" fill="none" stroke="#f9b3a5" stroke-width="1.5" />
+
+    <!-- Ears -->
+    <!-- Left Ear -->
+    <path d="M 125,180 C 115,180 115,220 125,230 Z" fill="url(#skinGrad)" stroke="#fcd3ca" stroke-width="0.5" />
+    <!-- Right Ear -->
+    <path d="M 275,180 C 285,180 285,220 275,230 Z" fill="url(#skinGrad)" stroke="#fcd3ca" stroke-width="0.5" />
+
+    <!-- Face Oval -->
+    <path d="M 130,140 C 130,70 270,70 270,140 C 270,210 260,265 200,265 C 140,265 130,210 130,140 Z" fill="url(#skinGrad)" />
+
+    <!-- Face Shadows (Chin & Cheeks for Dimension) -->
+    <path d="M 130,170 C 130,225 150,265 200,265 C 250,265 270,225 270,170 C 270,195 245,260 200,260 C 155,260 130,195 130,170 Z" fill="url(#skinShadow)" />
+
+    <!-- Nose -->
+    <path d="M 194,155 L 200,190 L 208,190" fill="none" stroke="#e09d8f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 190,192 C 193,196 207,196 210,192" fill="none" stroke="#e09d8f" stroke-width="2.5" stroke-linecap="round" />
+
+    <!-- Eyes (Intellectual / Polite Warm Look) -->
+    <!-- Left Eye -->
+    <ellipse cx="170" cy="148" rx="14" ry="7" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" />
+    <circle cx="171" cy="148" r="6" fill="#111827" />
+    <circle cx="169" cy="145" r="2" fill="#ffffff" /> <!-- pupil highlight -->
+    <path d="M 154,146 C 160,138 180,138 186,146" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" /> <!-- double eyelid -->
+
+    <!-- Right Eye -->
+    <ellipse cx="230" cy="148" rx="14" ry="7" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" />
+    <circle cx="229" cy="148" r="6" fill="#111827" />
+    <circle cx="227" cy="145" r="2" fill="#ffffff" /> <!-- pupil highlight -->
+    <path d="M 214,146 C 220,138 240,138 246,146" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" /> <!-- double eyelid -->
+
+    <!-- Eyebrows (Neat & Strong) -->
+    <!-- Left Eyebrow -->
+    <path d="M 152,133 C 160,126 175,127 184,133" fill="none" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round" />
+    <!-- Right Eyebrow -->
+    <path d="M 216,133 C 225,127 240,126 248,133" fill="none" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round" />
+
+    <!-- Mouth (Graceful Gentle Smile) -->
+    <path d="M 178,218 C 190,226 210,226 222,218" fill="none" stroke="#b26b5d" stroke-width="3" stroke-linecap="round" />
+    <path d="M 174,216 C 175,216 178,218 178,218" fill="none" stroke="#b26b5d" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M 226,216 C 225,216 222,218 222,218" fill="none" stroke="#b26b5d" stroke-width="2.5" stroke-linecap="round" />
+
+    <!-- Subtle Cheek Blush/Lines and Beard Shade -->
+    <ellipse cx="155" cy="185" rx="15" ry="6" fill="#fca5a5" opacity="0.15" />
+    <ellipse cx="245" cy="185" rx="15" ry="6" fill="#fca5a5" opacity="0.15" />
+
+    <!-- Hair (Neat Side Part, Layered Texture) -->
+    <!-- Base Hair Shape -->
+    <path d="M 130,130 C 120,130 115,100 135,70 C 150,50 180,45 200,45 C 230,45 260,50 275,75 C 290,105 280,140 270,140 C 275,120 270,95 260,85 C 248,70 215,65 195,72 C 170,80 150,95 135,115 C 130,120 131,125 130,130 Z" fill="url(#hairGrad)" />
+
+    <!-- Front Bangs/Side Part detail -->
+    <!-- Main Swept Hair Block (Left-to-Right part sweep) -->
+    <path d="M 134,115 C 145,95 175,78 205,74 C 235,70 262,78 270,96 C 260,90 230,85 200,90 C 165,95 145,105 134,115 Z" fill="#1e293b" />
+    <path d="M 138,125 C 148,110 170,95 198,92 C 220,90 245,93 258,102 C 245,98 215,95 190,98 C 165,101 146,112 138,125 Z" fill="#0f172a" />
+    <path d="M 148,135 C 158,122 178,112 202,110 C 215,108 230,111 238,116 C 228,113 210,111 195,113 C 175,115 158,125 148,135 Z" fill="#334155" />
+
+    <!-- Sideburns Left -->
+    <path d="M 130,150 L 126,175 L 132,175 Z" fill="url(#hairGrad)" />
+    <!-- Sideburns Right -->
+    <path d="M 270,150 L 274,175 L 268,175 Z" fill="url(#hairGrad)" stroke-linejoin="round" />
+
+    <!-- Suit Blazer Details: Lapels, Collars & Pocket -->
+    <!-- Left Collar & Lapel -->
+    <path d="M 160,352 L 115,445 L 165,435 L 175,360 Z" fill="url(#lapelGrad)" stroke="#1e293b" stroke-width="0.5" />
+    <!-- Right Collar & Lapel -->
+    <path d="M 240,352 L 285,445 L 235,435 L 225,360 Z" fill="url(#lapelGrad)" stroke="#1e293b" stroke-width="0.5" />
+
+    <!-- Lapel Folds & Highlights (Depth) -->
+    <path d="M 160,352 L 115,445" fill="none" stroke="#64748b" stroke-width="2" />
+    <path d="M 240,352 L 285,445" fill="none" stroke="#64748b" stroke-width="2" />
+
+    <!-- Blazer Pocket Square Accent (Professional Detail) -->
+    <path d="M 115,445 C 115,445 140,500 200,500 L 200,432" fill="none" stroke="#1e293b" stroke-width="1.5" />
+    <path d="M 285,445 C 285,445 260,500 200,500" fill="none" stroke="#1e293b" stroke-width="1.5" />
+  </g>
+</svg>

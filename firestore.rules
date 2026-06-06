@@ -91,10 +91,12 @@ service cloud.firestore {
     function isValidInsightData(data) {
       return data.keys().hasAll(['title', 'content', 'category', 'date', 'createdAt'])
         && data.title is string && data.title.size() <= 200
-        && data.content is string && data.content.size() <= 2000
+        && data.content is string && data.content.size() <= 25000
         && data.category is string && data.category.size() <= 100
         && data.date is string && data.date.size() <= 20
-        && data.createdAt is timestamp;
+        && data.createdAt is timestamp
+        && (!data.keys().hasAll(['status']) || (data.status is string && data.status in ['draft', 'published', 'archived']))
+        && (!data.keys().hasAll(['createdBy']) || (data.createdBy is string && data.createdBy.size() <= 100));
     }
 
     match /insights/{insightId} {
@@ -105,7 +107,8 @@ service cloud.firestore {
         && incoming().createdAt == request.time;
       allow update: if isAdmin()
         && isValidId(insightId)
-        && incoming().diff(existing()).affectedKeys().hasAny(['title', 'content', 'category', 'updatedAt']);
+        && isValidInsightData(incoming())
+        && incoming().diff(existing()).affectedKeys().hasAny(['title', 'content', 'category', 'status', 'createdBy', 'updatedAt']);
       allow delete: if isAdmin() && isValidId(insightId);
     }
     function isValidInquiry(data) {

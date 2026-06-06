@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Mail, MessageCircle } from 'lucide-react';
 import { KAKAO_CHANNEL_URL } from '../lib/constants';
@@ -30,13 +31,13 @@ export default function ContactCTA() {
               카카오톡으로 문의하기
             </a>
             
-            <a 
-              href="/#contact"
+            <Link 
+              to="/#contact"
               className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-5 text-lg font-bold rounded-xl text-white bg-brand-500 hover:bg-brand-400 border border-brand-400 transition-all shadow-[0_10px_20px_rgba(15,110,86,0.3)] group"
             >
               <Mail size={24} className="mr-3" />
               온라인 문의하기
-            </a>
+            </Link>
           </div>
         </motion.div>
       </div>

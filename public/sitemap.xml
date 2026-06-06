@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ais-dev-56tomqpgh2sqlynpc7fb2f-471630685044.asia-northeast1.run.app/</loc>
+    <loc>https://service-155360789137.asia-south1.run.app/</loc>
     <lastmod>2026-05-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://ais-dev-56tomqpgh2sqlynpc7fb2f-471630685044.asia-northeast1.run.app/services/iso27001</loc>
+    <loc>https://service-155360789137.asia-south1.run.app/services/iso27001</loc>
     <lastmod>2026-05-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-56tomqpgh2sqlynpc7fb2f-471630685044.asia-northeast1.run.app/services/iso27701</loc>
+    <loc>https://service-155360789137.asia-south1.run.app/services/iso27701</loc>
     <lastmod>2026-05-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-56tomqpgh2sqlynpc7fb2f-471630685044.asia-northeast1.run.app/products</loc>
+    <loc>https://service-155360789137.asia-south1.run.app/products</loc>
     <lastmod>2026-05-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-dev-56tomqpgh2sqlynpc7fb2f-471630685044.asia-northeast1.run.app/insights</loc>
+    <loc>https://service-155360789137.asia-south1.run.app/insights</loc>
     <lastmod>2026-05-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://service-155360789137.asia-south1.run.app/profile</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
 </urlset>
