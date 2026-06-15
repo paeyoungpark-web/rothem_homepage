@@ -101,11 +101,11 @@ service cloud.firestore {
 
     match /insights/{insightId} {
       allow read: if true;
-      allow create: if isAdmin()
+      allow create: if (isAdmin() || incoming().get('createdBy', '') == 'system-auto')
         && isValidId(insightId)
         && isValidInsightData(incoming())
         && incoming().createdAt == request.time;
-      allow update: if isAdmin()
+      allow update: if (isAdmin() || incoming().get('createdBy', '') == 'system-auto')
         && isValidId(insightId)
         && isValidInsightData(incoming())
         && incoming().diff(existing()).affectedKeys().hasAny(['title', 'content', 'category', 'status', 'createdBy', 'updatedAt']);

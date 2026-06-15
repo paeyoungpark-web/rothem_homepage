@@ -179,13 +179,13 @@ export default function ConsultingPackagesPage() {
                     id={`pkg-${pkg.id}`}
                     className={`relative rounded-3xl p-6 md:p-8 transition-all duration-300 ${
                       isHighlight
-                        ? 'bg-gradient-to-b from-brand-600 to-brand-700 text-white shadow-2xl scale-100 lg:scale-105 border-2 border-brand-500 z-10'
+                        ? 'bg-gradient-to-b from-emerald-800 to-emerald-950 text-white shadow-2xl scale-100 lg:scale-105 border-2 border-emerald-500 z-10'
                         : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 shadow-lg border border-slate-100 dark:border-slate-700/60'
                     }`}
                   >
                     {pkg.badge && (
                       <div className={`absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[11px] font-black tracking-wider uppercase shadow-md ${
-                        isHighlight ? 'bg-white text-brand-600' : 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950'
+                        isHighlight ? 'bg-white text-emerald-800' : 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950'
                       }`}>
                         {pkg.badge}
                       </div>
@@ -195,7 +195,7 @@ export default function ConsultingPackagesPage() {
                       <h3 className={`text-2xl font-black tracking-tight ${isHighlight ? 'text-white' : 'text-slate-900 dark:text-slate-50'}`}>
                         {pkg.name}
                       </h3>
-                      <p className={`text-xs font-semibold mt-1.5 ${isHighlight ? 'text-brand-200' : 'text-brand-600 dark:text-brand-400'}`}>
+                      <p className={`text-xs font-semibold mt-1.5 ${isHighlight ? 'text-emerald-200' : 'text-brand-600 dark:text-brand-400'}`}>
                         {pkg.target}
                       </p>
                       <p className={`text-sm mt-2 leading-relaxed ${isHighlight ? 'text-white/80' : 'text-slate-500 dark:text-slate-400'}`}>
@@ -208,7 +208,7 @@ export default function ConsultingPackagesPage() {
                         <span className={`text-3xl md:text-4xl font-extrabold ${isHighlight ? 'text-white' : 'text-slate-900 dark:text-slate-50'}`}>
                           {pkg.price}
                         </span>
-                        <span className={`text-xs font-semibold ${isHighlight ? 'text-brand-150' : 'text-slate-500'}`}>
+                        <span className={`text-xs font-semibold ${isHighlight ? 'text-emerald-200' : 'text-slate-500'}`}>
                           {pkg.priceNote}
                         </span>
                       </div>
@@ -220,12 +220,12 @@ export default function ConsultingPackagesPage() {
                           {feat.included ? (
                             <Check size={18} className={`flex-shrink-0 mt-0.5 ${isHighlight ? 'text-white' : 'text-brand-500'}`} />
                           ) : (
-                            <X size={18} className={`flex-shrink-0 mt-0.5 ${isHighlight ? 'text-brand-300/30' : 'text-slate-300 dark:text-slate-600'}`} />
+                            <X size={18} className={`flex-shrink-0 mt-0.5 ${isHighlight ? 'text-emerald-400/50' : 'text-slate-300 dark:text-slate-600'}`} />
                           )}
                           <span className={
                             feat.included
                               ? (isHighlight ? 'text-white' : 'text-slate-700 dark:text-slate-300')
-                              : (isHighlight ? 'text-brand-200/40 line-through' : 'text-slate-400 dark:text-slate-500 line-through')
+                              : (isHighlight ? 'text-emerald-300/60 line-through' : 'text-slate-400 dark:text-slate-500 line-through')
                           }>
                             {feat.text}
                           </span>
@@ -237,7 +237,7 @@ export default function ConsultingPackagesPage() {
                       to="/inquiries"
                       className={`flex items-center justify-center gap-2 w-full py-4 rounded-xl font-bold text-sm transition-all transform hover:-translate-y-0.5 shadow-xs cursor-pointer ${
                         isHighlight
-                          ? 'bg-white text-brand-600 hover:bg-brand-50 shadow-md'
+                          ? 'bg-white text-emerald-800 hover:bg-emerald-50 shadow-md'
                           : 'bg-slate-950 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-200'
                       }`}
                     >

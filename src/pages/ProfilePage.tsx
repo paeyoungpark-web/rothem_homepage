@@ -262,10 +262,10 @@ export default function ProfilePage() {
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 border border-slate-100 rounded-2xl bg-slate-50/50">
                       <div className="relative group shrink-0">
                         <img 
-                          src={editData.photoUrl || "/images/ceo_profile.jpg"} 
+                          src={editData.photoUrl || ""} 
                           alt="Preview" 
                           onError={(e) => {
-                            e.currentTarget.src = "/images/ceo_profile.jpg";
+                            e.currentTarget.src = "";
                           }}
                           className="w-20 h-20 rounded-full object-cover border-2 border-white shadow-sm" 
                         />
@@ -386,11 +386,11 @@ export default function ProfilePage() {
               >
                 <div className="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-blue-50 shadow-md mb-6 relative bg-blue-100 flex items-center justify-center">
                   <img 
-                    src={data.photoUrl || settings.profileImage || "/images/ceo_profile.jpg"} 
+                    src={data.photoUrl || settings.profileImage || ""} 
                     alt={data.name}
                     referrerPolicy="no-referrer"
                     onError={(e) => {
-                      e.currentTarget.src = "/images/ceo_profile.jpg";
+                      e.currentTarget.src = "";
                     }}
                     className="w-full h-full object-cover"
                   />

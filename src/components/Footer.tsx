@@ -17,7 +17,9 @@ export default function Footer() {
           <div className="flex flex-col">
             <Link to="/" className="mb-6 inline-block">
               {settings.logoImage ? (
-                <img src={settings.logoImage} alt="rothemsystem logo" className="h-10 object-contain brightness-0 invert opacity-90" />
+                <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-xl inline-block shadow-sm ring-1 ring-white/20">
+                  <img src={settings.logoImage} alt="rothemsystem logo" className="h-8 object-contain" />
+                </div>
               ) : (
                 <div className="flex items-end tracking-tighter italic">
                   <span className="text-brand-500 text-4xl font-black">R</span>

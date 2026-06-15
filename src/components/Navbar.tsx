@@ -109,7 +109,9 @@ export default function Navbar() {
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center gap-2 group pb-1">
               {settings.logoImage ? (
-                <img src={settings.logoImage} alt="로뎀시스템 로고" className="h-10 object-contain" />
+                <div className="bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-xl shadow-sm ring-1 ring-slate-900/5">
+                  <img src={settings.logoImage} alt="로뎀시스템 로고" className="h-8 object-contain" />
+                </div>
               ) : (
                 <>
                   <div className="flex items-end tracking-tighter italic">

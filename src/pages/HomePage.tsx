@@ -46,7 +46,7 @@ export default function HomePage() {
   }, [location.pathname, location.hash, location.key]);
 
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-900 transition-colors">
+    <div className="min-h-screen bg-white dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100 transition-colors">
       <SEO />
       <Navbar />
       <main>

@@ -5,9 +5,16 @@
 @theme {
   --color-brand-50: #F8FFFE;
   --color-brand-100: #F0FBF7;
+  --color-brand-150: #E0F8EE;
+  --color-brand-200: #D1F4E6;
+  --color-brand-300: #A3E7CF;
   --color-brand-400: #1D9E75;
   --color-brand-500: #0F6E56;
+  --color-brand-600: #0C5A46;
+  --color-brand-700: #094535;
   --color-brand-800: #0a1628;
+  --color-brand-900: #042017;
+  --color-brand-950: #02120C;
   --font-sans: "Inter", "Noto Sans KR", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --animate-marquee: marquee 45s linear infinite;
   --animate-marquee-reverse: marquee-reverse 45s linear infinite;
